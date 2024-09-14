@@ -1,24 +1,21 @@
 import mongoose, { Schema } from "mongoose";
 
-/*
-id: user.id,
-name: `${user.first_name} ${user.last_name || ''}`,
-username: user.username || '',
-points: 0,
-completedTasks: []
-*/
-
 const userSchema = new Schema(
   {
     id: { type: String, required: true, unique: true },
-    name: { type: String, required: true },
+    first_name: { type: String, required: true },
+    last_name: { type: String },
     username: { type: String, required: true, unique: true },
+    language_code: { type: String },
+    is_premium: { type: Boolean, default: false },
     points: { type: Number, default: 0 },
-    completedTasks: [{ type: Schema.Types.ObjectId, ref: "Task" }],
+    completedTasks: [{ type: Number }],
+    referralCode: { type: String, unique: true }, 
+    referrals: { type: [{ type: String }], default: [] }, 
   },
   { timestamps: true }
 );
 
-const User = mongoose.model.User || mongoose.model("User", userSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
 export default User;

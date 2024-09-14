@@ -1,0 +1,118 @@
+import { useEffect, useState } from "react";
+import WebApp from "@twa-dev/sdk";
+import {
+  PointsUpdatePopupProps,
+  TGUserData,
+  UserData,
+  sampleUserData,
+} from "@/libs/types";
+import { premiumUserTask } from "@/libs/constants";
+
+export const useInitializeUser = () => {
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+  const [showWelcomePopup, setShowWelcomePopup] = useState<boolean>(false);
+  const [showPointsUpdatePopup, setShowPointsUpdatePopup] =
+    useState<PointsUpdatePopupProps | null>(null);
+
+  useEffect(() => {
+    const initializeUser = async () => {
+      let user: TGUserData;
+
+      if (process.env.NEXT_PUBLIC_DEVELOPMENT === "true") {
+        user = sampleUserData as TGUserData;
+      } else if (typeof window !== "undefined" && WebApp.initDataUnsafe.user) {
+        await WebApp.ready();
+        user = WebApp.initDataUnsafe.user as TGUserData;
+      } else {
+        console.error("User data is not available");
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `/api/users/getUser?username=${user.username}`
+        );
+        if (response.ok) {
+          const userData = await response.json();
+          setUserData(userData.user);
+          setShowPopup(true);
+        } else {
+          const createUserResponse = await fetch("/api/users/createUser", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              id: user.id,
+              first_name: user.first_name,
+              last_name: user.last_name,
+              username: user.username,
+              language_code: user.language_code,
+              is_premium: user.is_premium,
+              points: 0,
+              completedTasks: [],
+            }),
+          });
+
+          if (createUserResponse.ok) {
+            const newUser = await createUserResponse.json();
+            setUserData(newUser.user);
+            if (user.is_premium) {
+              const task = premiumUserTask;
+
+              try {
+                const response = await fetch("/api/users/updatePoints", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    id: user.id,
+                    points: task.points,
+                    task: task.id,
+                  }),
+                });
+
+                if (!response.ok) {
+                  throw new Error("Failed to update user data");
+                }
+
+                const updatedUser = await response.json();
+                setUserData(updatedUser.user);
+
+                setShowPointsUpdatePopup({
+                  message: "Congratulations! Your wallet has been connected.",
+                  points: task.points,
+                  buttonText: "Yaay",
+                  onClose: () => setShowPointsUpdatePopup(null),
+                  positive: true,
+                });
+              } catch (error) {
+                console.error("Error updating user data:", error);
+              }
+            }
+            setShowWelcomePopup(true);
+          } else {
+            console.error("Error creating user");
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    initializeUser();
+  }, []);
+
+  return {
+    userData,
+    setUserData,
+    showPopup,
+    setShowPopup,
+    showWelcomePopup,
+    setShowWelcomePopup,
+    showPointsUpdatePopup,
+    setShowPointsUpdatePopup,
+  };
+};
