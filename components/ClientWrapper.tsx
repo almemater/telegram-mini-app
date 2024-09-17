@@ -10,7 +10,7 @@ const ClientWrapper = ({ children }: { children: ReactNode }) => {
     <UserProvider>
       <TonConnectUIProvider manifestUrl="https://jsample.vercel.app/tonconnect-manifest.json">
         <AppBar />
-        <main className="flex-grow p-4 pb-16 overflow-y-auto">{children}</main>
+        <main className="flex-grow p-4 pb-16 ">{children}</main>
         {/* <NavBar /> */}
       </TonConnectUIProvider>
     </UserProvider>

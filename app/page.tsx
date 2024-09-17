@@ -1,16 +1,25 @@
 "use client";
 
-import MemoryGameComponent from '@/components/MemoryGameComponent';
-import Popup from '@/components/Popup';
-import WelcomePopup from '@/components/WelcomePopup';
-import { useUser } from '@/context/UserContext';
-import { rewardPoints } from '@/libs/constants';
-import { useRef } from 'react';
+import MemoryGameComponent from "@/components/MemoryGameComponent";
+import PageHeader from "@/components/PageHeader";
+import Popup from "@/components/Popup";
+import WelcomePopup from "@/components/WelcomePopup";
+import { useUser } from "@/context/UserContext";
+import { rewardPoints } from "@/libs/constants";
+import { useRef } from "react";
 
 const Home = () => {
-  const { userData, setUserData, showPopup, setShowPopup, showWelcomePopup, setShowWelcomePopup, setShowPointsUpdatePopup } = useUser();
+  const {
+    userData,
+    setUserData,
+    showPopup,
+    setShowPopup,
+    showWelcomePopup,
+    setShowWelcomePopup,
+    setShowPointsUpdatePopup,
+  } = useUser();
   const memoryGameRef = useRef<{ startGame: () => void }>(null);
- 
+
   const handleStartGame = () => {
     setShowPopup(false);
     memoryGameRef.current?.startGame();
@@ -54,15 +63,29 @@ const Home = () => {
   };
 
   return (
-    <div>
-      {userData ? (
-        <MemoryGameComponent ref={memoryGameRef} userData={userData} setUserData={setUserData} />
-      ) : (
-        <div>Loading...</div>
+    <>
+      <PageHeader title="Home" description="Play, Learn & Earn" />
+      <div className="mb-8 mt-4">
+        {userData ? (
+          <MemoryGameComponent
+            ref={memoryGameRef}
+            userData={userData}
+            setUserData={setUserData}
+          />
+        ) : (
+          <div>Loading...</div>
+        )}
+      </div>
+      {showPopup && (
+        <Popup onClose={() => setShowPopup(false)} onStart={handleStartGame} />
       )}
-      {showPopup && <Popup onClose={() => setShowPopup(false)} onStart={handleStartGame} />}
-      {showWelcomePopup && <WelcomePopup onSubmit={handleWelcomeSubmit} onClose={() => setShowWelcomePopup(false)} />}
-    </div>
+      {showWelcomePopup && (
+        <WelcomePopup
+          onSubmit={handleWelcomeSubmit}
+          onClose={() => setShowWelcomePopup(false)}
+        />
+      )}
+    </>
   );
 };
 

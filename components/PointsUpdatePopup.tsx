@@ -23,7 +23,7 @@ const PointsUpdatePopup: React.FC<PointsUpdatePopupProps> = ({
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
       {positive && <Confetti width={width} height={height} />}
       <div className="bg-white text-black p-4 rounded-lg w-4/5 max-w-md">
-        <h2 className="text-xl font-bold mb-2">{message}</h2>
+        <h2 className="text-2xl tracking-wide font-bold mb-2">{message}</h2>
         <p className="mb-4">
           You have earned {points} points
         </p>

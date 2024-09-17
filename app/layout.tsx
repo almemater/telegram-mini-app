@@ -20,13 +20,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <Script src="https://telegram.org/js/telegram-web-app.js" strategy="beforeInteractive" />
+        <Script
+          src="https://telegram.org/js/telegram-web-app.js"
+          strategy="beforeInteractive"
+        />
       </head>
       <body className={inter.className}>
         <div className="flex flex-col min-h-screen bg-dark text-white">
-          <ClientWrapper>
-            {children}</ClientWrapper>
-          
+          <ClientWrapper>{children}</ClientWrapper>
+
           <NavBar />
         </div>
       </body>
