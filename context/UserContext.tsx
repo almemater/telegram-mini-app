@@ -12,6 +12,7 @@ interface UserContextType {
   setShowWelcomePopup: (show: boolean) => void;
   showPointsUpdatePopup: PointsUpdatePopupProps | null;
   setShowPointsUpdatePopup: (popup: PointsUpdatePopupProps | null) => void;
+  loading: boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -26,6 +27,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     setShowWelcomePopup,
     showPointsUpdatePopup,
     setShowPointsUpdatePopup,
+    loading,
   } = useInitializeUser();
 
   return (
@@ -39,6 +41,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setShowWelcomePopup,
         showPointsUpdatePopup,
         setShowPointsUpdatePopup,
+        loading,
       }}
     >
       {children}

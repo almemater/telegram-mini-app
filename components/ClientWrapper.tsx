@@ -1,19 +1,44 @@
 "use client";
-
+import { useEffect, useState } from "react";
 import { ReactNode } from "react";
-import { UserProvider } from "@/context/UserContext";
+import { UserProvider, useUser } from "@/context/UserContext";
 import AppBar from "./AppBar";
 import { TonConnectUIProvider } from "@tonconnect/ui-react";
+import SplashScreen from "./SplashScreen"; // Import SplashScreen
+import NavBar from "./NavBar";
 
 const ClientWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <UserProvider>
-      <TonConnectUIProvider manifestUrl="https://jsample.vercel.app/tonconnect-manifest.json">
-        <AppBar />
-        <main className="flex-grow p-4 pb-16 overflow-y-auto">{children}</main>
-        {/* <NavBar /> */}
-      </TonConnectUIProvider>
+      <InnerClientWrapper>{children}</InnerClientWrapper>
     </UserProvider>
+  );
+};
+
+const InnerClientWrapper = ({ children }: { children: ReactNode }) => {
+  const { loading } = useUser();
+  const [minimumLoadingTime, setMinimumLoadingTime] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMinimumLoadingTime(false);
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <TonConnectUIProvider manifestUrl="https://jsample.vercel.app/tonconnect-manifest.json">
+      {loading || minimumLoadingTime ? (
+        <SplashScreen /> // Show SplashScreen while loading or minimum loading time has not passed
+      ) : (
+        <>
+          <AppBar />
+          <main className="flex-grow p-4 pb-16">{children}</main>
+          <NavBar />
+        </>
+      )}
+    </TonConnectUIProvider>
   );
 };
 
