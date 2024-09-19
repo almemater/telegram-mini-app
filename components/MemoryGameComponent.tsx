@@ -211,7 +211,7 @@ const MemoryGameComponent = forwardRef<unknown, MemoryGameComponentProps>(
     };
 
     return (
-      <div className="flex flex-col items-center justify-center mt-4 mb-8">
+      <div className="flex flex-col items-center justify-center">
         <div className="flex gap-6 game-info mb-4 text-xl text-center">
           <div className="flex items-center">
             <FaClock className="mr-2" /> <span id="timer">{timeLeft}</span> s
@@ -228,10 +228,10 @@ const MemoryGameComponent = forwardRef<unknown, MemoryGameComponentProps>(
           {cards.map((item, index) => (
             <div
               key={index}
-              className={`card w-20 h-20 flex items-center justify-center text-2xl cursor-pointer transition-transform transform ${
+              className={`card rounded w-20 h-20 flex items-center justify-center text-2xl cursor-pointer transition-transform transform ${
                 flippedCards.includes(index) || matchedCards.includes(index)
                   ? "rotate-y-180 bg-green-500"
-                  : "bg-blue-500"
+                  : "bg-dark-100"
               }`}
               onClick={() => flipCard(index)}
             >
