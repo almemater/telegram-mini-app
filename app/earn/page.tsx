@@ -251,7 +251,7 @@ const EarnPage = () => {
         <div className="my-4 border border-gray-300" />
 
         <h1 className="text-3xl tracking-wide font-bold mb-4">Refer a friend</h1>
-        <div className="bg-yellow-100 p-4 rounded text-black">
+        <div className="glassmorphic p-4  text-white">
           <p className="text-lg font-semibold">
             Invite your friends and earn rewards!
           </p>

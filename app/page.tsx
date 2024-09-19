@@ -64,7 +64,7 @@ const Home = () => {
 
   return (
     <>
-      <PageHeader title="Home" description="Play, Learn & Earn" />
+      <PageHeader title="Home" description="Unlock Cognitive Potential" />
       <div className="mb-8 mt-4">
         {userData ? (
           <MemoryGameComponent
