@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { FaCopy, FaShareAlt } from "react-icons/fa";
 import { TonConnectButton, useTonWallet } from "@tonconnect/ui-react";
 import { Task } from "@/libs/types";
+import PageHeader from "@/components/PageHeader";
 
 const EarnPage = () => {
   const { userData, setUserData, setShowPointsUpdatePopup } = useUser();
@@ -162,120 +163,139 @@ const EarnPage = () => {
     fetchReferredUsers();
   }, [userData.id]);
 
+  const generateShareDetails = (referralCode: string | null) => {
+    const baseUri = "https://t.me/jsamplebot";
+    const shareText = referralCode
+      ? `I'm inviting you to use MindmInt! \n\nIf the link didn't work automatically, use my referral code ${referralCode} while onboarding.`
+      : "I'm inviting you to use MindmInt!";
+    const shareUri = referralCode
+      ? `${baseUri}?startapp=${referralCode}`
+      : baseUri;
+
+    return { shareText, shareUri };
+  };
+
   const handleShare = () => {
-    if (referralCode) {
-      const shareText = `I'm inviting you to use MindmInt! Use my referral code ${referralCode} while onboarding.`;
-      if (typeof window !== "undefined") {
-        WebApp.ready();
-        WebApp.openTelegramLink(
-          `https://t.me/share/url?url=https://t.me/jsamplebot&text=${encodeURIComponent(
-            shareText
-          )}`
-        );
-      }
+    const { shareText, shareUri } = generateShareDetails(referralCode);
+
+    if (typeof window !== "undefined") {
+      WebApp.ready();
+      WebApp.openTelegramLink(
+        `https://t.me/share/url?url=${encodeURIComponent(
+          shareUri
+        )}&text=${encodeURIComponent(shareText)}`
+      );
     }
   };
 
   const handleCopy = () => {
-    if (referralCode) {
-      const inviteText = `I'm inviting you to use MindmInt! Use my referral code ${referralCode} while onboarding. Join here: https://t.me/jsamplebot`;
-      navigator.clipboard
-        .writeText(inviteText)
-        .then(() => {
-          setCopyButtonText("Copied!");
-          setTimeout(() => setCopyButtonText("Copy"), 2000);
-        })
-        .catch((error) => {
-          console.error("Error copying text:", error);
-        });
-    }
+    const { shareText, shareUri } = generateShareDetails(referralCode);
+    const inviteText = referralCode
+      ? `${shareText} Join here: ${shareUri}`
+      : shareText;
+
+    navigator.clipboard
+      .writeText(inviteText)
+      .then(() => {
+        setCopyButtonText("Copied!");
+        setTimeout(() => setCopyButtonText("Copy"), 2000);
+      })
+      .catch((error) => {
+        console.error("Error copying text:", error);
+      });
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Earn with Tasks</h1>
-      <ul>
-        {tasks.map((task) => (
-          <li key={task.id} className="mb-2 flex justify-between items-center">
-            <span>{task.name}</span>
-            <button
-              onClick={() => handleTaskCompletion(task)}
-              disabled={userData.completedTasks.includes(task.id)}
-              className={`ml-4 px-4 py-2 rounded ${
-                userData.completedTasks.includes(task.id)
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-500 text-white hover:bg-blue-700"
-              }`}
+    <>
+      <PageHeader title="Earn" description="Claim points for tasks" />
+      <div className="px-4 mb-8 mt-4">
+        {/* <h1 className="text-2xl font-bold mb-4">Earn with Tasks</h1> */}
+        <ul>
+          {tasks.map((task) => (
+            <li
+              key={task.id}
+              className="mb-2 flex justify-between items-center"
             >
-              {userData.completedTasks.includes(task.id)
-                ? "Completed"
-                : task.btn}
-            </button>
+              <span>{task.name}</span>
+              <button
+                onClick={() => handleTaskCompletion(task)}
+                disabled={userData.completedTasks.includes(task.id)}
+                className={`ml-4 px-4 py-2 rounded ${
+                  userData.completedTasks.includes(task.id)
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-blue-500 text-white hover:bg-blue-700"
+                }`}
+              >
+                {userData.completedTasks.includes(task.id)
+                  ? "Completed"
+                  : task.btn}
+              </button>
+            </li>
+          ))}
+          <li
+            id="ton-connect-list-item"
+            className="mb-2 flex justify-between items-center"
+          >
+            <span>Connect TON Wallet</span>
+            <TonConnectButton />
           </li>
-        ))}
-        <li
-          id="ton-connect-list-item"
-          className="mb-2 flex justify-between items-center"
-        >
-          <span>Connect TON Wallet</span>
-          <TonConnectButton />
-        </li>
-      </ul>
+        </ul>
 
-      <div className="my-4 border border-gray-300" />
+        <div className="my-4 border border-gray-300" />
 
-      <div className="mb-2 flex justify-between items-center">
-        <span>Wallet Status:</span>
-        <span>{isWalletConnected ? "Connected" : "Not Connected"}</span>
-      </div>
+        <div className="mb-2 flex justify-between items-center">
+          <span>Wallet Status:</span>
+          <span>{isWalletConnected ? "Connected" : "Not Connected"}</span>
+        </div>
 
-      <div className="my-4 border border-gray-300" />
+        <div className="my-4 border border-gray-300" />
 
-      <h1 className="text-2xl font-bold mb-4">Refer a friend</h1>
-      <div className="bg-yellow-100 p-4 rounded text-black">
-        <p className="text-lg font-semibold">
-          Invite your friends and earn rewards!
-        </p>
-        {referralCode ? (
-          <div>
-            <p className="mt-2">
-              Your referral code: <strong>{referralCode}</strong>
-            </p>
-            <div className="flex space-x-4 mt-4">
-              <button
-                onClick={handleShare}
-                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 flex items-center"
-              >
-                Share <FaShareAlt className="mx-2" />
-              </button>
-              <button
-                onClick={handleCopy}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 flex items-center"
-              >
-                {copyButtonText} <FaCopy className="mx-2" />
-              </button>
+        <h1 className="text-3xl tracking-wide font-bold mb-4">Refer a friend</h1>
+        <div className="glassmorphic p-4  text-white">
+          <p className="text-lg font-semibold">
+            Invite your friends and earn rewards!
+          </p>
+          {referralCode ? (
+            <div>
+              <p className="mt-2">
+                Your referral code: <strong>{referralCode}</strong>
+              </p>
+              <div className="flex space-x-4 mt-4">
+                <button
+                  onClick={handleShare}
+                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 flex items-center"
+                >
+                  Share <FaShareAlt className="mx-2" />
+                </button>
+                <button
+                  onClick={handleCopy}
+                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 flex items-center"
+                >
+                  {copyButtonText} <FaCopy className="mx-2" />
+                </button>
+              </div>
             </div>
-          </div>
-        ) : (
-          <div>Loading...</div>
-        )}
-      </div>
+          ) : (
+            <div>Loading...</div>
+          )}
+        </div>
 
-      <h1 className="text-xl font-semibold my-4">Referred Users</h1>
-      <div className="text-light">
-        {referredUsers.length > 0 ? (
-          <ol className="list-decimal list-inside">
-            {referredUsers.map((user) => (
-              <li key={user.id} className="mb-2">
-                {user.first_name} (@{user.username})
-              </li>
-            ))}
-          </ol>
-        ) : (
-          <p>No users have joined through your referral yet.</p>
-        )}
+        <h1 className="text-2xl tracking-wide font-semibold my-4">Referred Users</h1>
+        <div className="text-light">
+          {referredUsers.length > 0 ? (
+            <ol className="list-decimal list-inside">
+              {referredUsers.map((user) => (
+                <li key={user.id} className="mb-2">
+                  {user.first_name} (@{user.username})
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <p>No users have joined through your referral yet.</p>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

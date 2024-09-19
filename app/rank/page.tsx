@@ -1,4 +1,5 @@
 "use client";
+import PageHeader from "@/components/PageHeader";
 import { useUser } from "@/context/UserContext";
 import { UserData } from "@/libs/types";
 import { useEffect, useState } from "react";
@@ -40,9 +41,10 @@ const RankPage = () => {
   }
 
   return (
-    <div>
-      <div className="leaderboard">
-        <h1 className="text-2xl font-bold mb-4">Leaderboard</h1>
+    <>
+      <PageHeader title="Leaderboard" description="Check out the top performers" />
+      <div className="leaderboard mt-4 mb-8">
+        {/* <h1 className="text-2xl font-bold mb-4">Leaderboard</h1> */}
         <ul>
           {users.map((user, index) => (
             <li
@@ -67,7 +69,7 @@ const RankPage = () => {
           ))}
         </ul>
       </div>
-    </div>
+    </>
   );
 };
 
