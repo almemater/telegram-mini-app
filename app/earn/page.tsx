@@ -4,10 +4,11 @@ import { useUser } from "@/context/UserContext";
 import { tasks, walletConnectTask } from "@/libs/constants";
 import WebApp from "@twa-dev/sdk";
 import { useEffect, useState } from "react";
-import { FaCopy, FaShareAlt } from "react-icons/fa";
+import { FaShareAlt } from "react-icons/fa";
 import { TonConnectButton, useTonWallet } from "@tonconnect/ui-react";
 import { Task } from "@/libs/types";
 import PageHeader from "@/components/PageHeader";
+import { IoCopy } from "react-icons/io5";
 
 const EarnPage = () => {
   const { userData, setUserData, setShowPointsUpdatePopup } = useUser();
@@ -222,8 +223,8 @@ const EarnPage = () => {
                 disabled={userData.completedTasks.includes(task.id)}
                 className={`ml-4 px-4 py-2 rounded ${
                   userData.completedTasks.includes(task.id)
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-blue-500 text-white hover:bg-blue-700"
+                    ? "bg-gradient-to-b from-gray-200 to-gray-400 shadow-md cursor-not-allowed"
+                    : "btn-primary"
                 }`}
               >
                 {userData.completedTasks.includes(task.id)
@@ -250,7 +251,7 @@ const EarnPage = () => {
 
         <div className="my-4 border border-gray-300" />
 
-        <h1 className="text-3xl tracking-wide font-bold mb-4">Refer a friend</h1>
+        <h1 className="text-3xl tracking-wider font-bold mb-4">Refer a friend</h1>
         <div className="glassmorphic p-4  text-white">
           <p className="text-lg font-semibold">
             Invite your friends and earn rewards!
@@ -263,15 +264,15 @@ const EarnPage = () => {
               <div className="flex space-x-4 mt-4">
                 <button
                   onClick={handleShare}
-                  className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700 flex items-center"
+                  className="px-4 py-2 btn-primary text-white flex items-center"
                 >
                   Share <FaShareAlt className="mx-2" />
                 </button>
                 <button
                   onClick={handleCopy}
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700 flex items-center"
+                  className="px-4 py-2 btn-secondary rounded flex items-center"
                 >
-                  {copyButtonText} <FaCopy className="mx-2" />
+                  {copyButtonText} <IoCopy className="mx-2" />
                 </button>
               </div>
             </div>
@@ -280,7 +281,7 @@ const EarnPage = () => {
           )}
         </div>
 
-        <h1 className="text-2xl tracking-wide font-semibold my-4">Referred Users</h1>
+        <h1 className="text-2xl tracking-wider font-semibold my-4">Referred Users</h1>
         <div className="text-light">
           {referredUsers.length > 0 ? (
             <ol className="list-decimal list-inside">

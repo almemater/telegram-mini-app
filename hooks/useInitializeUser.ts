@@ -40,7 +40,7 @@ export const useInitializeUser = () => {
         if (response.ok) {
           const userData = await response.json();
           setUserData(userData.user);
-          setShowPopup(true);
+          // setShowPopup(true);
         } else {
           const createUserResponse = await fetch("/api/users/createUser", {
             method: "POST",

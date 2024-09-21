@@ -212,12 +212,12 @@ const MemoryGameComponent = forwardRef<unknown, MemoryGameComponentProps>(
 
     return (
       <div className="flex flex-col items-center justify-center">
-        <div className="flex gap-6 game-info mb-4 text-xl text-center">
+        <div className="flex glassmorphic px-4 py-2 gap-6 game-info mb-4 text-xl text-center">
           <div className="flex items-center">
             <FaClock className="mr-2" /> <span id="timer">{timeLeft}</span> s
           </div>
           <div className="flex items-center">
-            <FaStar className="mr-2 text-green-400" />{" "}
+            <FaStar className="mr-2 text-primary shadow-xl" />{" "}
             <span id="score">{score}</span>
           </div>
           <div className="flex items-center">
@@ -244,17 +244,17 @@ const MemoryGameComponent = forwardRef<unknown, MemoryGameComponentProps>(
         <div className="buttons mt-4">
           {!isGameActive ? (
             <button
-              className={`button-start text-white py-2 px-4 rounded mr-2 transition-transform transform ${
+              className={`button-start text-white py-2 px-6 rounded mr-2 transition-transform transform ${
                 isLoading ? "scale-95" : "scale-100"
               } ${
                 isGameActive || isLoading
                   ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-green-500 hover:bg-green-700"
+                  : "btn-primary"
               }`}
               onClick={() => initializeGame(true)}
               disabled={isGameActive || isLoading}
             >
-              {isLoading && isGameActive ? "Starting..." : "Start"}
+              {isLoading && isGameActive ? "Starting..." : "Start 🚀"}
             </button>
           ) : (
             <button
@@ -263,7 +263,7 @@ const MemoryGameComponent = forwardRef<unknown, MemoryGameComponentProps>(
               } ${
                 !isGameActive || isLoading
                   ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-red-500 hover:bg-red-700"
+                  : "btn-secondary"
               }`}
               onClick={stopGame}
               disabled={!isGameActive || isLoading}

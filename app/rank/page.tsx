@@ -3,7 +3,8 @@ import PageHeader from "@/components/PageHeader";
 import { useUser } from "@/context/UserContext";
 import { UserData } from "@/libs/types";
 import { useEffect, useState } from "react";
-import { FaCoins, FaMedal } from "react-icons/fa";
+import { FaMedal } from "react-icons/fa";
+import { GiTwoCoins } from "react-icons/gi";
 
 const RankPage = () => {
   const { userData } = useUser();
@@ -49,7 +50,7 @@ const RankPage = () => {
           {users.map((user, index) => (
             <li
               key={index}
-              className={`flex items-center mb-2 ${
+              className={`flex justify-center items-center mb-2 ${
                 user.username === userData.username
                   ? "font-extrabold text-primary"
                   : ""
@@ -63,7 +64,7 @@ const RankPage = () => {
                 {user.first_name} {user.last_name}
               </span>
               <span className="ml-auto">
-                {user.points} <FaCoins className="inline text-yellow-300" />
+                {user.points} <GiTwoCoins className="inline text-yellow-300" />
               </span>
             </li>
           ))}

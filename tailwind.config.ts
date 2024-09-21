@@ -13,7 +13,15 @@ const config: Config = {
         secondary: '#742b5a',
         tertiary: '#0a1236',
         dark: '#160b1b',
+
+        "primary-100": '#f36464',
+        "primary-200": '#a11e1e',
+        
+        "tertiary-100": '#af64f3',
+        "tertiary-200": '#521ea1',
+        
         'dark-100': '#5e3383',
+        'dark-200': '#372241',
       },
       fontFamily: {
         primary: ['SwitzerVariable', 'sans-serif'],

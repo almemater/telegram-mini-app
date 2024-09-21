@@ -55,6 +55,24 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
+@layer components {
+  .btn-primary {
+    @apply bg-gradient-to-b from-tertiary-100 to-tertiary-200 text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300 ease-in-out;
+  }
+
+  .btn-primary:hover {
+    @apply shadow-sm;
+  }
+
+  .btn-secondary {
+    @apply bg-gradient-to-b from-primary-100 to-primary-200 text-white font-bold py-2 px-4 rounded-md shadow-md transition-all duration-300 ease-in-out;
+  }
+
+  .btn-secondary:hover {
+    @apply shadow-sm;
+  }
+}
+
 /* Glassmorphism */
 .glassmorphic {
   background: rgba(255, 255, 255, 0.1);
@@ -64,3 +82,19 @@ h1, h2, h3, h4, h5, h6 {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+@keyframes gradient-shift {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.animate-bg-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 5s ease infinite !important;
+}

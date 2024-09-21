@@ -1,9 +1,9 @@
 "use client";
 import { useUser } from "@/context/UserContext";
 import React, { useEffect } from "react";
-import { FaCoins } from "react-icons/fa";
 import PointsUpdatePopup from "./PointsUpdatePopup";
 import Image from "next/image";
+import { GiTwoCoins } from "react-icons/gi";
 
 const AppBar = () => {
   const { userData, showPointsUpdatePopup } = useUser();
@@ -19,7 +19,7 @@ const AppBar = () => {
         {userData && (
           <div className="flex items-center glassmorphic p-2 rounded-lg">
             <span className="flex items-center">
-              <FaCoins className="mr-1 text-yellow-400" /> {userData.points}
+              <GiTwoCoins className="mr-1 text-yellow-400" /> {userData.points}
             </span>
             <span className="mx-2">|</span>
             <span className="">@{userData.username || "N/A"}</span>
