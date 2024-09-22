@@ -28,7 +28,7 @@ const InnerClientWrapper = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <TonConnectUIProvider manifestUrl="https://jsample.vercel.app/tonconnect-manifest.json">
+    <TonConnectUIProvider manifestUrl="https://mindmint.almemater.com/tonconnect-manifest.json">
       {loading || minimumLoadingTime ? (
         <SplashScreen /> // Show SplashScreen while loading or minimum loading time has not passed
       ) : (

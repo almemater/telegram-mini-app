@@ -165,7 +165,7 @@ const EarnPage = () => {
   }, [userData.id]);
 
   const generateShareDetails = (referralCode: string | null) => {
-    const baseUri = "https://t.me/jsamplebot";
+    const baseUri = "http://t.me/AMMindMintbot/Mindmint";
     const shareText = referralCode
       ? `I'm inviting you to use MindmInt! \n\nIf the link didn't work automatically, use my referral code ${referralCode} while onboarding.`
       : "I'm inviting you to use MindmInt!";
