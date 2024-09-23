@@ -4,11 +4,12 @@ import { useUser } from "@/context/UserContext";
 import { tasks, walletConnectTask } from "@/libs/constants";
 import WebApp from "@twa-dev/sdk";
 import { useEffect, useState } from "react";
-import { FaShareAlt } from "react-icons/fa";
+import { FaArrowRight, FaShareAlt } from "react-icons/fa";
 import { TonConnectButton, useTonWallet } from "@tonconnect/ui-react";
 import { Task } from "@/libs/types";
 import PageHeader from "@/components/PageHeader";
 import { IoCopy } from "react-icons/io5";
+import { GiTwoCoins } from "react-icons/gi";
 
 const EarnPage = () => {
   const { userData, setUserData, setShowPointsUpdatePopup } = useUser();
@@ -229,7 +230,11 @@ const EarnPage = () => {
               >
                 {userData.completedTasks.includes(task.id)
                   ? "Completed"
-                  : task.btn}
+                  : 
+                    <div className="flex items-center justify-center">
+                    <GiTwoCoins className="mr-2 text-yellow-400"/>{task.points} <FaArrowRight className="ml-2" />
+                    </div>
+                  }
               </button>
             </li>
           ))}

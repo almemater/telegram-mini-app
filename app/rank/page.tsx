@@ -64,7 +64,7 @@ const RankPage = () => {
                 {user.first_name} {user.last_name}
               </span>
               <span className="ml-auto">
-                {user.points} <GiTwoCoins className="inline text-yellow-300" />
+                {user.points} <GiTwoCoins className="inline text-yellow-400" />
               </span>
             </li>
           ))}

@@ -8,7 +8,6 @@ const connection: ConnectionObject = {};
 
 async function connectMongoDB(): Promise<void> {
   if (connection.isConnected) {
-    console.log("Already connected to DB");
     return;
   }
 

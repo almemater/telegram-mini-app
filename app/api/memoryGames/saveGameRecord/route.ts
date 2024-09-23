@@ -16,17 +16,25 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const newGameRecord = await MemoryGame.create({
-    gameId,
-    userId,
-    score,
-    timeTaken,
-    flips,
-    isWin,
-  });
+  try {
+    const newGameRecord = await MemoryGame.create({
+      gameId,
+      userId,
+      score,
+      timeTaken,
+      flips,
+      isWin,
+    });
+  
+    console.log(`Game completed for user ${userId} with gameid ${gameId}`);
+  
+    return NextResponse.json(
+      { message: "Game record saved successfully", gameRecord: newGameRecord },
+      { status: 201 }
+    );
 
-  return NextResponse.json(
-    { message: "Game record saved successfully", gameRecord: newGameRecord },
-    { status: 201 }
-  );
+  } catch (e) {
+    console.error("Error saving game record", e);
+    return NextResponse.json({ message: "Error saving game record" }, { status: 500 });
+  }
 }

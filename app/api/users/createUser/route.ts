@@ -39,6 +39,8 @@ export async function POST(request: NextRequest) {
       completedTasks,
       referralCode
     });
+
+    console.log(`User created: ${newUser}`);
   
     return NextResponse.json(
       { message: "User created successfully", user: newUser },

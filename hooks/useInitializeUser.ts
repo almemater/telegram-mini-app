@@ -101,7 +101,7 @@ export const useInitializeUser = () => {
             if (referralCode) {
               await handleReferral(referralCode, newUser.user.id);
             } else {
-              setShowWelcomePopup(true);
+              // setShowWelcomePopup(true);
             }
           } else {
             console.error("Error creating user");
