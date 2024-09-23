@@ -35,7 +35,7 @@ export const useInitializeUser = () => {
 
       try {
         const response = await fetch(
-          `/api/users/getUser?username=${user.username}`
+          `/api/users/getUser?userid=${user.id}`
         );
         if (response.ok) {
           const userData = await response.json();

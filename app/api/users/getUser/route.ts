@@ -6,7 +6,7 @@ export async function GET(request : NextRequest) {
     // console.log("API route /api/users/getUser hit");
 
     const { searchParams } = new URL(request.url);
-    const username = searchParams.get('username');
+    const id = searchParams.get('userid');
 
     // console.log(`Received request to get user with username: ${username}`);
 
@@ -14,7 +14,7 @@ export async function GET(request : NextRequest) {
 
     // console.log("Connected to MongoDB");
 
-    const user = await User.findOne({ username });
+    const user = await User.findOne({ id });
 
     if (!user) {
         // console.log(`Couldn't find user with username: ${username}`);
