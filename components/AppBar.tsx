@@ -6,20 +6,20 @@ import Image from "next/image";
 import { GiTwoCoins } from "react-icons/gi";
 
 const AppBar = () => {
-  const { userData, showPointsUpdatePopup } = useUser();
+  const { userData, pointsData, showPointsUpdatePopup } = useUser();
 
   useEffect(() => {
     console.log("Show Points Update Popup: ", showPointsUpdatePopup);
-  }, [userData, showPointsUpdatePopup]);
+  }, [userData, pointsData, showPointsUpdatePopup]);
 
   return (
     <>
       <div className="z-10 bg-gradient-to-br from-primary via-secondary to-tertiary text-white px-4 pt-4 pb-14 flex justify-between items-center">
         <Image src="/logo-white.svg" alt="MindmInt Logo" width={100} height={40} />
-        {userData && (
+        {userData && pointsData && (
           <div className="flex items-center glassmorphic p-2 rounded-lg">
             <span className="flex items-center">
-              <GiTwoCoins className="mr-1 text-yellow-400" /> {userData.points}
+              <GiTwoCoins className="mr-1 text-yellow-400" /> {pointsData.points}
             </span>
             <span className="mx-2">|</span>
             <span className="">@{userData.username || "N/A"}</span>

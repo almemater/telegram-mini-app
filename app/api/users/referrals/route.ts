@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import connectMongoDB from '@/libs/mongodb';
 import User from '@/models/user';
+import PointsData from '@/models/pointsdata';
 import { rewardPoints } from '@/libs/constants';
 
 export async function POST(request: NextRequest) {
-  console.log('POST request received');
   try {
     await connectMongoDB();
 
@@ -42,19 +42,25 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Update referrer's points and referrals list
-    const updatedReferrer = await User.findOneAndUpdate(
+    // Update referrer's points and referrals list in User collection
+    await User.findOneAndUpdate(
       { id: referrer.id },
       { 
-        $inc: { points: rewardPoints.referFriend },
         $push: { referrals: referee.id }
       },
       { new: true }
     );
     // console.log('Updated referrer:', updatedReferrer);
 
-    // Update referee's points
-    const updatedReferee = await User.findOneAndUpdate(
+    // Update referrer's points in Leaderboard collection
+    const referrerPointsData = await PointsData.findOneAndUpdate(
+      { id: referrer.id },
+      { $inc: { points: rewardPoints.referFriend } },
+      { new: true }
+    );
+
+    // Update referee's points in Leaderboard collection
+    const refereePointsData = await PointsData.findOneAndUpdate(
       { id: referee.id },
       { $inc: { points: rewardPoints.referFriend } },
       { new: true }
@@ -62,7 +68,7 @@ export async function POST(request: NextRequest) {
     // console.log('Updated referee:', updatedReferee);
 
     return NextResponse.json(
-      { message: 'Referral processed successfully', referee: updatedReferee, referrer: updatedReferrer },
+      { message: 'Referral processed successfully', referrer: referrerPointsData, referee: refereePointsData },
       { status: 200 }
     );
   } catch (error) {

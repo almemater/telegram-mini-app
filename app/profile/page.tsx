@@ -1,6 +1,6 @@
 "use client";
 import { useUser } from "@/context/UserContext";
-import { UserData, MemoryGameRecord } from "@/libs/types";
+import { UserData, MemoryGameRecord, PointsData } from "@/libs/types";
 import { useEffect, useState } from "react";
 import { BestGameRecordTypes } from "@/libs/constants";
 import {
@@ -18,7 +18,7 @@ import { FaRepeat } from "react-icons/fa6";
 
 const ProfilePage = () => {
   const { userData } = useUser();
-  const [users, setUsers] = useState<UserData[]>([]);
+  const [users, setUsers] = useState<PointsData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [recentGame, setRecentGame] = useState<MemoryGameRecord | null>(null);
 
@@ -26,15 +26,12 @@ const ProfilePage = () => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const response = await fetch("/api/users", {
+        const response = await fetch("/api/points", {
           method: "POST",
         });
         if (response.ok) {
           const data = await response.json();
-          const sortedUsers = data.users.sort(
-            (a: UserData, b: UserData) => b.points - a.points
-          );
-          setUsers(sortedUsers);
+          setUsers(data.pointsdata);
         } else {
           console.error("Error fetching users");
         }
@@ -77,7 +74,7 @@ const ProfilePage = () => {
     }
   }, [userData]);
 
-  const getUserRank = (users: UserData[], currentUser: UserData) => {
+  const getUserRank = (users: PointsData[], currentUser: UserData) => {
     return (
       users.findIndex((user) => user.username === currentUser.username) + 1
     );

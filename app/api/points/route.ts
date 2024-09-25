@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectMongoDB from "@/libs/mongodb";
-import User from "@/models/user";
+import PointsData from "@/models/pointsdata";
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,13 +8,13 @@ export async function POST(request: NextRequest) {
     await connectMongoDB();
 
     // Fetch all users in descending order of points
-    const users = await User.find(
+    const pointsdata = await PointsData.find(
       {},
-      { first_name: 1, last_name: 1, username: 1, points: 1 }
+      { full_name: 1, username: 1, points: 1 }
     ).sort({ points: -1 });
 
     
-    if (!users) {
+    if (!pointsdata) {
       console.error("Error fetching users");
       return NextResponse.json(
         { error: "Internal Server Error" },
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Return the users in the response with cache control headers
-    const response = NextResponse.json({ users });
+    const response = NextResponse.json({ pointsdata });
 
     return response;
   } catch (error) {

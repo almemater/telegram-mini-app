@@ -1,11 +1,13 @@
 "use client";
 import { createContext, useContext, ReactNode } from "react";
 import { useInitializeUser } from "@/hooks/useInitializeUser";
-import { PointsUpdatePopupProps, UserData } from "@/libs/types";
+import { PointsUpdatePopupProps, UserData, PointsData } from "@/libs/types";
 
 interface UserContextType {
   userData: UserData | null;
   setUserData: (user: UserData | null) => void;
+  pointsData: PointsData | null;
+  setPointsData: (point: PointsData | null) => void;
   showPopup: boolean;
   setShowPopup: (show: boolean) => void;
   showWelcomePopup: boolean;
@@ -21,6 +23,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const {
     userData,
     setUserData,
+    pointsData,
+    setPointsData,
     showPopup,
     setShowPopup,
     showWelcomePopup,
@@ -35,6 +39,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       value={{
         userData,
         setUserData,
+        pointsData,
+        setPointsData,
         showPopup,
         setShowPopup,
         showWelcomePopup,

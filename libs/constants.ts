@@ -7,7 +7,6 @@ export const BestGameRecordTypes = {
     HIGHSCORE: 'highScore',
 }
 
-
 // REWARD SYSTEM
 export const rewardPoints = {
   followOnTwitter: 200,

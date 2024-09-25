@@ -12,7 +12,7 @@ import { IoCopy } from "react-icons/io5";
 import { GiTwoCoins } from "react-icons/gi";
 
 const EarnPage = () => {
-  const { userData, setUserData, setShowPointsUpdatePopup } = useUser();
+  const { userData, setUserData, pointsData, setPointsData, setShowPointsUpdatePopup } = useUser();
 
   if (!userData) {
     return <div>Loading...</div>;
@@ -40,7 +40,7 @@ const EarnPage = () => {
           // const newCompletedTasks = [...userData.completedTasks, task.id];
 
           try {
-            const response = await fetch("/api/users/updatePoints", {
+            const response = await fetch("/api/points/updatePoints", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -58,6 +58,7 @@ const EarnPage = () => {
 
             const updatedUser = await response.json();
             setUserData(updatedUser.user);
+            setPointsData(updatedUser.pointsdata);
 
             setShowPointsUpdatePopup({
               message: "Congratulations! Your wallet has been connected.",
@@ -81,7 +82,7 @@ const EarnPage = () => {
         // const newCompletedTasks = [...userData.completedTasks, task.id];
 
         try {
-          const response = await fetch("/api/users/updatePoints", {
+          const response = await fetch("/api/points/updatePoints", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -99,6 +100,7 @@ const EarnPage = () => {
 
           const updatedUser = await response.json();
           setUserData(updatedUser.user);
+          setPointsData(updatedUser.pointsdata);
 
           setShowPointsUpdatePopup({
             message: "Task Completed!",

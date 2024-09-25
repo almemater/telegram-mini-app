@@ -1,29 +1,33 @@
 "use client";
 import PageHeader from "@/components/PageHeader";
 import { useUser } from "@/context/UserContext";
-import { UserData } from "@/libs/types";
+import { PointsData } from "@/libs/types";
 import { useEffect, useState } from "react";
 import { FaMedal } from "react-icons/fa";
 import { GiTwoCoins } from "react-icons/gi";
 
 const RankPage = () => {
-  const { userData } = useUser();
-  const [users, setUsers] = useState<UserData[]>([]);
+  const { userData, pointsData } = useUser();
+  const [users, setUsers] = useState<PointsData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchUsers = async () => {
+      if (!userData) {
+        console.error("User data is not available");
+        return;
+      };
       setLoading(true);
       try {
-        const response = await fetch("/api/users", {
+        const response = await fetch("/api/points", {
           method: "POST",
         });
         if (response.ok) {
           const data = await response.json();
-          const sortedUsers = data.users.sort(
-            (a: UserData, b: UserData) => b.points - a.points
-          );
-          setUsers(sortedUsers);
+          setUsers(data.pointsdata);
+
+          // Calculate the user's rank
+          const sortedUsers = data.pointsdata.sort((a: PointsData, b: PointsData) => b.points - a.points);
         } else {
           console.error("Error fetching users");
         }
@@ -35,17 +39,27 @@ const RankPage = () => {
     };
 
     fetchUsers();
-  }, []);
+  }, [userData]);
 
-  if (loading || !userData) {
+  const getUserRank = (users: PointsData[], currentUser: PointsData) => {
+    return (
+      users.findIndex((user) => user.username === currentUser.username) + 1
+    );
+  };
+
+  if (loading || !userData || !pointsData) {
     return <div>Loading...</div>;
   }
 
+  const userRank = getUserRank(users, pointsData);
+
   return (
     <>
-      <PageHeader title="Leaderboard" description="Check out the top performers" />
+      <PageHeader
+        title="Leaderboard"
+        description={`Your rank: ${userRank}`}
+      />
       <div className="leaderboard mt-4 mb-8">
-        {/* <h1 className="text-2xl font-bold mb-4">Leaderboard</h1> */}
         <ul>
           {users.map((user, index) => (
             <li
@@ -60,9 +74,7 @@ const RankPage = () => {
               {index === 1 && <FaMedal className="text-gray-500 mr-2" />}
               {index === 2 && <FaMedal className="text-orange-500 mr-2" />}
               {index > 2 && <span className="mr-2">{index + 1}.</span>}
-              <span>
-                {user.first_name} {user.last_name}
-              </span>
+              <span>{user.full_name}</span>
               <span className="ml-auto">
                 {user.points} <GiTwoCoins className="inline text-yellow-400" />
               </span>

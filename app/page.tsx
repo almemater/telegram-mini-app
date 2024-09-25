@@ -12,6 +12,8 @@ const Home = () => {
   const {
     userData,
     setUserData,
+    pointsData,
+    setPointsData,
     showPopup,
     setShowPopup,
     showWelcomePopup,
@@ -45,9 +47,9 @@ const Home = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setUserData(data.referee);
+        setPointsData(data.referee);
         setShowPointsUpdatePopup({
-          message: `You were referred by ${data.referrer.first_name}`,
+          message: `You were referred by ${data.referrer.full_name}`,
           points: rewardPoints.referFriend,
           buttonText: "Close",
           onClose: () => setShowPointsUpdatePopup(null),
@@ -69,8 +71,6 @@ const Home = () => {
         {userData ? (
           <MemoryGameComponent
             ref={memoryGameRef}
-            userData={userData}
-            setUserData={setUserData}
           />
         ) : (
           <div>Loading...</div>
