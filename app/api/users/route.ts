@@ -10,8 +10,8 @@ export async function POST(request: NextRequest) {
     // Fetch all users in descending order of points
     const users = await User.find(
       {},
-      { first_name: 1, last_name: 1, username: 1, points: 1 }
-    ).sort({ points: -1 });
+      { first_name: 1, last_name: 1, username: 1 }
+    );
 
     
     if (!users) {

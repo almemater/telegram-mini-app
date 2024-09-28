@@ -12,7 +12,6 @@ export async function POST(request: NextRequest) {
       {},
       { full_name: 1, username: 1, points: 1 }
     ).sort({ points: -1 });
-
     
     if (!pointsdata) {
       console.error("Error fetching users");
