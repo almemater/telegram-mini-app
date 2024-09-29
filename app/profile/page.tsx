@@ -26,9 +26,7 @@ const ProfilePage = () => {
     const fetchUsers = async () => {
       setLoading(true);
       try {
-        const response = await fetch("/api/points", {
-          method: "POST",
-        });
+        const response = await fetch("/api/points");
         if (response.ok) {
           const data = await response.json();
           setUsers(data.pointsdata);

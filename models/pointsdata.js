@@ -10,6 +10,8 @@ const pointsdataSchema = new Schema(
   { timestamps: true }
 );
 
+pointsdataSchema.index({ points: -1 });
+
 const PointsData = mongoose.models.PointsData || mongoose.model("PointsData", pointsdataSchema);
 
 export default PointsData;

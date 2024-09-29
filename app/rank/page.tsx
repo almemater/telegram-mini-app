@@ -19,15 +19,13 @@ const RankPage = () => {
       };
       setLoading(true);
       try {
-        const response = await fetch("/api/points", {
-          method: "POST",
-        });
+        const response = await fetch("/api/points");
         if (response.ok) {
           const data = await response.json();
           setUsers(data.pointsdata);
 
           // Calculate the user's rank
-          const sortedUsers = data.pointsdata.sort((a: PointsData, b: PointsData) => b.points - a.points);
+          // const sortedUsers = data.pointsdata.sort((a: PointsData, b: PointsData) => b.points - a.points);
         } else {
           console.error("Error fetching users");
         }
@@ -41,17 +39,11 @@ const RankPage = () => {
     fetchUsers();
   }, [userData]);
 
-  const getUserRank = (users: PointsData[], currentUser: PointsData) => {
-    return (
-      users.findIndex((user) => user.username === currentUser.username) + 1
-    );
-  };
-
-  if (loading || !userData || !pointsData) {
+  if (!userData || !pointsData || loading) {
     return <div>Loading...</div>;
   }
 
-  const userRank = getUserRank(users, pointsData);
+  const userRank = users.findIndex((user) => user.username === pointsData.username) + 1;
 
   return (
     <>

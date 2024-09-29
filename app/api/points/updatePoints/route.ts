@@ -8,6 +8,8 @@ export async function POST(request: NextRequest) {
   await connectMongoDB();
 
   try {
+    // check if 
+
     const pointsdata = await PointsData.findOneAndUpdate(
       { id },
       { $inc: { points: points } },
