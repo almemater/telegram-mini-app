@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import PointsUpdatePopup from "./PointsUpdatePopup";
 import Image from "next/image";
 import { GiTwoCoins } from "react-icons/gi";
+import MindmintCoin from "./MindmintCoin";
 
 const AppBar = () => {
   const { userData, pointsData, showPointsUpdatePopup } = useUser();
@@ -19,7 +20,7 @@ const AppBar = () => {
         {userData && pointsData && (
           <div className="flex items-center glassmorphic p-2 rounded-lg">
             <span className="flex items-center">
-              <GiTwoCoins className="mr-1 text-yellow-400" /> {pointsData.points}
+              <MindmintCoin className="mr-1" /> {pointsData.points}
             </span>
             <span className="mx-2">|</span>
             <span className="">@{userData.username || "N/A"}</span>

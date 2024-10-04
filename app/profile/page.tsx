@@ -87,18 +87,18 @@ const ProfilePage = () => {
   return (
     <>
       <PageHeader title="Profile" description={`@${userData.username}`} />
-      <div className="max-w-4xl mt-4 mb-9 mx-auto p-4">
+      <div className=" mx-auto p-4">
         <div className="flex flex-col items-center mb-6">
-          <h1 className="text-4xl font-bold mb-2">
+          <h1 className="text-4xl font-bold ">
             {userData.first_name} {userData.last_name}
           </h1>
           <p className="text-gray-600">Rank: #{userRank}</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="py-4 px-8 bg-secondary rounded-lg">
+          <div className="p-4 bg-secondary rounded-lg">
             <h2 className="text-2xl font-semibold mb-4">Profile Information</h2>
             <p className="text-lg mb-2 flex items-center">
-              <FaUser className="mr-2" /> <strong>Name:</strong>{" "}
+              <FaUser className="mr-2" /> <strong>Name:</strong>
               {userData.first_name}
             </p>
             <p className="text-lg mb-2 flex items-center">
@@ -111,11 +111,11 @@ const ProfilePage = () => {
             </p>
           </div>
           {recentGame && (
-              <div className="relative p-4 bg-white text-dark rounded-lg shadow-md mb-4">
+              <div className="relative p-4 bg-white text-dark rounded-lg shadow-md">
                 <h3 className="text-xl font-semibold mb-2 flex items-center">
                   Last Gameplay
                 </h3>
-                <p className={`absolute top-2 right-2 px-2 text-md mb-2 flex items-center bg-black bg-opacity-20 font-secondary rounded ${recentGame.isWin ? "text-primary-100" : "text-secondary"}`}>
+                <p className={`absolute top-2 right-2 px-2 text-md mb-2 flex items-center bg-black bg-opacity-20 font-secondary tracking-wider rounded ${recentGame.isWin ? "text-green-500" : "text-secondary"}`}>
                     {recentGame.isWin ? "WON" : "LOST"}
                   </p>
                 <div className="flex  items-center gap-3">
@@ -133,7 +133,6 @@ const ProfilePage = () => {
               </div>
             )}
           {/* <div className="p-4 bg-secondary rounded-lg">
-            <h2 className="text-2xl font-semibold mb-4">Activity</h2>
             
             <CognitiveAssessment />
           </div> */}

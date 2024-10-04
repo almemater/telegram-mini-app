@@ -25,7 +25,7 @@ const PointsUpdatePopup: React.FC<PointsUpdatePopupProps> = ({
       <div className="bg-white text-black p-4 rounded-lg w-4/5 max-w-md">
         <h2 className="text-2xl font-bold mb-2">{message}</h2>
         <p className="mb-4">
-          You have earned {points} points
+          You have earned {points} coins
         </p>
         <div className="flex justify-end">
           <button
