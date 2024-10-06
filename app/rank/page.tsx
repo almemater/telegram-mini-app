@@ -22,7 +22,12 @@ const RankPage = () => {
       }
       setLoading(true);
       try {
-        const response = await fetch("/api/points");
+        const response = await fetch("/api/points", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         if (response.ok) {
           const data = await response.json();
           setUsers(data.pointsdata);

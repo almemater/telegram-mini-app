@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import connectMongoDB from "@/libs/mongodb";
 import PointsData from "@/models/pointsdata";
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
     // Connect to MongoDB
     await connectMongoDB();

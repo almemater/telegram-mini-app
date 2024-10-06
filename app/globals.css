@@ -73,3 +73,10 @@ h6 {
   @apply bg-white bg-opacity-10 rounded-lg backdrop-blur-md border border-white border-opacity-20;
 }
 
+.glassmorphic-tertiary {
+  @apply bg-tertiary bg-opacity-50 rounded-lg backdrop-blur-lg border border-tertiary border-opacity-20;
+}
+
+.gradientbg {
+  @apply bg-gradient-to-br from-primary to-tertiary via-secondary;
+}

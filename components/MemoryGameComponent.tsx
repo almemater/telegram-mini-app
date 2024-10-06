@@ -10,6 +10,7 @@ import { useUser } from "@/context/UserContext";
 import { generateGameId } from "@/libs/generators";
 import { FaClock, FaStar, FaSyncAlt, FaPlay, FaStop } from "react-icons/fa";
 import { FaRepeat } from "react-icons/fa6";
+import MindmintCoin from "./MindmintCoin";
 
 const stationeryItems = ["✏️", "🖊️", "📏", "📐", "📎", "🖇️", "📌", "🗑️"];
 const initialCards = [...stationeryItems, ...stationeryItems];
@@ -213,7 +214,8 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
           <FaClock className="mr-2" /> <span id="timer">{timeLeft}</span> s
         </div>
         <div className="flex items-center">
-          <FaStar className="mr-2 text-primary shadow-xl" />{" "}
+          {/* <FaStar className="mr-2 text-primary shadow-xl" />{" "} */}
+          <MindmintCoin className="mr-2 shadow-xl" />{" "}
           <span id="score">{score}</span>
         </div>
         <div className="flex items-center">

@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const MaintanencePage = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-primary via-secondary to-tertiary">
+    <div className="min-h-screen flex flex-col items-center justify-center gradientbg">
       <Image
         src="/logo-white.svg"
         alt="MindmInt Logo"

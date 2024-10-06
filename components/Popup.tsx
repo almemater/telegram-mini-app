@@ -8,7 +8,7 @@ interface PopupProps {
 const Popup: React.FC<PopupProps> = ({ onClose, onStart }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white text-black p-4 rounded-lg w-4/5 max-w-md">
+      <div className="glassmorphic-tertiary text-white p-4 rounded-lg shadow-lg w-4/5 max-w-md">
         <h2 className="text-2xl font-bold mb-2">Welcome to the Memory Game!</h2>
         <p className="mb-4">
           Match all the pairs of cryptocurrency icons to win the game. You have 60 seconds to match all pairs. Good luck!

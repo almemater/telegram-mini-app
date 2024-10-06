@@ -40,13 +40,6 @@ export const tasks: Task[] = [
     btn: "Follow",
     points: rewardPoints.followOnLinkedIn,
   },
-  {
-    id: 4,
-    name: "Share Your Feedback",
-    link: "https://forms.gle/D2vx7ZvegpBKByvw6",
-    btn: "Complete",
-    points: rewardPoints.completeFeedback,
-  }, 
 ];
 
 export const walletConnectTask: Task = {

@@ -13,7 +13,13 @@ import Image from "next/image";
 import MindmintCoin from "@/components/MindmintCoin";
 
 const EarnPage = () => {
-  const { userData, setUserData, pointsData, setPointsData, setShowPointsUpdatePopup } = useUser();
+  const {
+    userData,
+    setUserData,
+    pointsData,
+    setPointsData,
+    setShowPointsUpdatePopup,
+  } = useUser();
 
   if (!userData) {
     return <div>Loading...</div>;
@@ -70,45 +76,45 @@ const EarnPage = () => {
             console.error("Error updating user data:", error);
           }
         }, 3000); // 3 seconds delay
-      }
-
-      if (typeof window !== "undefined") {
-        window.open(task.link, "_blank");
-      }
-
-      setTimeout(async () => {
-        try {
-          const response = await fetch("/api/points/updatePoints", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              id: userData.id,
-              points: task.points,
-              task: task.id,
-            }),
-          });
-
-          if (!response.ok) {
-            throw new Error("Failed to update user data");
-          }
-
-          const updatedUser = await response.json();
-          setUserData(updatedUser.user);
-          setPointsData(updatedUser.pointsdata);
-
-          setShowPointsUpdatePopup({
-            message: "Task Completed!",
-            points: task.points,
-            buttonText: "Close",
-            onClose: () => setShowPointsUpdatePopup(null),
-            positive: true,
-          });
-        } catch (error) {
-          console.error("Error updating user data:", error);
+      } else {
+        if (typeof window !== "undefined") {
+          window.open(task.link, "_blank");
         }
-      }, 3000); // 3 seconds delay
+
+        setTimeout(async () => {
+          try {
+            const response = await fetch("/api/points/updatePoints", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                id: userData.id,
+                points: task.points,
+                task: task.id,
+              }),
+            });
+
+            if (!response.ok) {
+              throw new Error("Failed to update user data");
+            }
+
+            const updatedUser = await response.json();
+            setUserData(updatedUser.user);
+            setPointsData(updatedUser.pointsdata);
+
+            setShowPointsUpdatePopup({
+              message: "Task Completed!",
+              points: task.points,
+              buttonText: "Close",
+              onClose: () => setShowPointsUpdatePopup(null),
+              positive: true,
+            });
+          } catch (error) {
+            console.error("Error updating user data:", error);
+          }
+        }, 3000); // 3 seconds delay
+      }
     }
   };
 
@@ -225,14 +231,14 @@ const EarnPage = () => {
                     : "btn-primary"
                 }`}
               >
-                {userData.completedTasks.includes(task.id)
-                  ? "Completed"
-                  : 
-                    <div className="flex items-center justify-center">
-                    <MindmintCoin className="mr-2"/>
+                {userData.completedTasks.includes(task.id) ? (
+                  "Completed"
+                ) : (
+                  <div className="flex items-center justify-center">
+                    <MindmintCoin className="mr-2" />
                     {task.points} <FaArrowRight className="ml-2" />
-                    </div>
-                  }
+                  </div>
+                )}
               </button>
             </li>
           ))}
@@ -242,13 +248,11 @@ const EarnPage = () => {
           >
             <span>Your Weekly Rewards</span>
             <button
-                onClick={() => setIsModalOpen(true)}
-                className="btn-primary"
-              >
-                <div className="flex items-center justify-center">
-                    View
-                    </div>
-              </button>
+              onClick={() => setIsModalOpen(true)}
+              className="btn-primary"
+            >
+              <div className="flex items-center justify-center">View</div>
+            </button>
           </li>
           <li
             id="ton-connect-list-item"
@@ -280,12 +284,14 @@ const EarnPage = () => {
         
         <div className="my-4 border border-gray-300" /> */}
 
-        <h1 className="text-3xl tracking-wider font-bold mb-4">Refer a friend</h1>
-        <div className="glassmorphic p-4  text-white">
-          <p className="text-lg font-semibold flex">
+        <h1 className="text-3xl tracking-wider font-bold mb-4">
+          Refer a friend
+        </h1>
+        <div className="glassmorphic p-4  text-white ">
+          <p className="text-lg font-semibold">
             <span>Invite your friends and earn </span>
-            <span className="inline-flex justify-center items-center mx-2">
-            {rewardPoints.referFriend} <MindmintCoin className="ml-2"/>
+            <span className="inline-flex justify-center items-center ">
+              {rewardPoints.referFriend} <MindmintCoin className="ml-2" />
             </span>
           </p>
           {referralCode ? (
@@ -313,7 +319,9 @@ const EarnPage = () => {
           )}
         </div>
 
-        <h1 className="text-2xl tracking-wider font-semibold my-4">Referred Users</h1>
+        <h1 className="text-2xl tracking-wider font-semibold my-4">
+          Referred Users
+        </h1>
         <div className="text-light">
           {referredUsers.length > 0 ? (
             <ol className="list-decimal list-inside">
@@ -327,13 +335,11 @@ const EarnPage = () => {
             <p>No users have joined through your referral yet.</p>
           )}
         </div>
-
-        
       </div>
       {/* Reward Program Modal */}
       {isModalOpen && (
-          <RewardsProgramPopup onClose={() => setIsModalOpen(false)} />
-        )}
+        <RewardsProgramPopup onClose={() => setIsModalOpen(false)} />
+      )}
     </>
   );
 };
