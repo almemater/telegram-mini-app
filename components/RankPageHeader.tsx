@@ -4,7 +4,7 @@ import { PiRankingDuotone } from "react-icons/pi";
 
 interface RankPageHeaderProps {
     points: number;
-  rank: number;
+    rank: number | string;
 //   bestGameScore: number | string;
 }
 

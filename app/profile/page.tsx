@@ -18,12 +18,16 @@ import { FaRepeat } from "react-icons/fa6";
 
 const ProfilePage = () => {
   const { userData } = useUser();
-  const [users, setUsers] = useState<PointsData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [recentGame, setRecentGame] = useState<MemoryGameRecord | null>(null);
+  const [userRank, setUserRank] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
+      if (!userData) {
+        console.error("User data is not available");
+        return;
+      }
       setLoading(true);
       try {
         const response = await fetch("/api/points", {
@@ -31,10 +35,11 @@ const ProfilePage = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({ userId: userData.id }),
         });
         if (response.ok) {
           const data = await response.json();
-          setUsers(data.pointsdata);
+          setUserRank(data.userRank);
         } else {
           console.error("Error fetching users");
         }
@@ -77,17 +82,9 @@ const ProfilePage = () => {
     }
   }, [userData]);
 
-  const getUserRank = (users: PointsData[], currentUser: UserData) => {
-    return (
-      users.findIndex((user) => user.username === currentUser.username) + 1
-    );
-  };
-
   if (loading || !userData) {
     return <div>Loading...</div>;
   }
-
-  const userRank = getUserRank(users, userData);
 
   return (
     <>
@@ -97,7 +94,7 @@ const ProfilePage = () => {
           <h1 className="text-4xl font-bold ">
             {userData.first_name} {userData.last_name}
           </h1>
-          <p className="text-gray-600">Rank: #{userRank}</p>
+          <p className="text-gray-600">Rank: #{userRank || "..."}</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="p-4 bg-secondary rounded-lg">
@@ -116,27 +113,30 @@ const ProfilePage = () => {
             </p>
           </div>
           {recentGame && (
-              <div className="relative p-4 bg-white text-dark rounded-lg shadow-md">
-                <h3 className="text-xl font-semibold mb-2 flex items-center">
-                  Last Gameplay
-                </h3>
-                <p className={`absolute top-2 right-2 px-2 text-md mb-2 flex items-center bg-black bg-opacity-20 font-secondary tracking-wider rounded ${recentGame.isWin ? "text-green-500" : "text-secondary"}`}>
-                    {recentGame.isWin ? "WON" : "LOST"}
-                  </p>
-                <div className="flex  items-center gap-3">
-                  <p className="text-md mb-2 flex items-center">
-                    <FaStar className="mr-1 text-primary" /> {recentGame.score}
-                  </p>
-                  <p className="text-md mb-2 flex items-center">
-                    <FaClock className="mr-1" /> {recentGame.timeTaken}
-                  </p>
-                  <p className="text-md mb-2 flex items-center">
-                    <FaRepeat className="mr-1" /> {recentGame.flips}
-                  </p>
-                  
-                </div>
+            <div className="relative p-4 bg-secondary text-white rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold mb-2 flex items-center">
+                Last Gameplay
+              </h3>
+              <p
+                className={`absolute top-2 right-2 px-2 text-md mb-2 flex items-center bg-black bg-opacity-20 font-secondary tracking-wider rounded ${
+                  recentGame.isWin ? "text-green-500" : "text-secondary"
+                }`}
+              >
+                {recentGame.isWin ? "WON" : "LOST"}
+              </p>
+              <div className="flex  items-center gap-3">
+                <p className="text-md mb-2 flex items-center">
+                  <FaStar className="mr-1 text-primary" /> {recentGame.score}
+                </p>
+                <p className="text-md mb-2 flex items-center">
+                  <FaClock className="mr-1" /> {recentGame.timeTaken}
+                </p>
+                <p className="text-md mb-2 flex items-center">
+                  <FaRepeat className="mr-1" /> {recentGame.flips}
+                </p>
               </div>
-            )}
+            </div>
+          )}
           {/* <div className="p-4 bg-secondary rounded-lg">
             
             <CognitiveAssessment />

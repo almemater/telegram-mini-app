@@ -3,6 +3,7 @@ import MindmintCoin from "@/components/MindmintCoin";
 import RankPageHeader from "@/components/RankPageHeader";
 import { useUser } from "@/context/UserContext";
 import { BestGameRecordTypes } from "@/libs/constants";
+import { formatName } from "@/libs/generators";
 import { PointsData } from "@/libs/types";
 import { useEffect, useState } from "react";
 import { FaMedal } from "react-icons/fa";
@@ -13,9 +14,10 @@ const RankPage = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [bestGameScore, setBestGameScore] = useState<number>(0);
   const [bestGameScoreLoading, setBestGameScoreLoading] = useState<boolean>(true);
+  const [userRank, setUserRank] = useState<number | null>(null);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchUsersAndRank = async () => {
       if (!userData) {
         console.error("User data is not available");
         return;
@@ -27,15 +29,17 @@ const RankPage = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({ userId: userData.id }),
         });
         if (response.ok) {
           const data = await response.json();
           setUsers(data.pointsdata);
+          setUserRank(data.userRank);
         } else {
-          console.error("Error fetching users");
+          console.error("Error fetching users and rank");
         }
       } catch (error) {
-        console.error("Error fetching users:", error);
+        console.error("Error fetching users and rank:", error);
       } finally {
         setLoading(false);
       }
@@ -68,7 +72,7 @@ const RankPage = () => {
       }
     };
 
-    fetchUsers();
+    fetchUsersAndRank();
     fetchBestGameScore();
   }, [userData]);
 
@@ -76,13 +80,11 @@ const RankPage = () => {
     return <div>Loading...</div>;
   }
 
-  const userRank = users.findIndex((user) => user.username === pointsData.username) + 1;
-
   return (
     <>
       <RankPageHeader
         points={pointsData.points}
-        rank={userRank}
+        rank={userRank || "..."}
         // bestGameScore={bestGameScoreLoading ? "..." : bestGameScore}
       />
       <div className="leaderboard mt-4 mb-8">
@@ -100,7 +102,7 @@ const RankPage = () => {
               {index === 1 && <FaMedal className="text-gray-500 mr-2" />}
               {index === 2 && <FaMedal className="text-orange-500 mr-2" />}
               {index > 2 && <span className="mr-2">{index + 1}.</span>}
-              <span>{user.full_name}</span>
+              <span>{formatName(user.full_name)}</span>
               <span className="ml-auto flex gap-1 justify-center items-center">
                 {user.points} 
                 <MindmintCoin />
