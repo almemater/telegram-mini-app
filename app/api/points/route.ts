@@ -9,11 +9,11 @@ export async function POST(request: NextRequest) {
     // Connect to MongoDB
     await connectMongoDB();
 
-    // Fetch all users in descending order of points
+    // Fetch top 25 users in descending order of points
     const pointsdata = await PointsData.find(
       {},
-      { id:1, full_name: 1, username: 1, points: 1 }
-    ).sort({ points: -1, _id: 1 });
+      { id: 1, full_name: 1, username: 1, points: 1 }
+    ).sort({ points: -1, _id: 1 }).limit(50);
 
     if (!pointsdata) {
       console.error("Error fetching users");
@@ -23,14 +23,24 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    let userRank = null;
     if (userId) {
-      // Find the rank of the user
-      const userRank = await pointsdata.findIndex(user => user.id === userId) + 1;
-      return NextResponse.json({ pointsdata, userRank });
+      // Fetch the user's points
+      const user = await PointsData.findOne({ id: userId }, { points: 1 });
+      if (user) {
+        // Count the number of users with more points than the current user
+        const higherPointsCount = await PointsData.countDocuments({
+          $or: [
+            { points: { $gt: user.points } },
+            { points: user.points, _id: { $lt: user._id } }
+          ]
+        });
+        userRank = higherPointsCount + 1;
+      }
     }
 
-    // Return the users and optionally the user's rank in the response
-    return NextResponse.json({ pointsdata });
+    // Return the top 50 users and optionally the user's rank in the response
+    return NextResponse.json({ pointsdata, userRank });
   } catch (error) {
     console.error("Error fetching users:", error);
     return NextResponse.json(

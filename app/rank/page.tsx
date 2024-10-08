@@ -110,6 +110,11 @@ const RankPage = () => {
             </li>
           ))}
         </ul>
+        {users.length >= 50 && (
+          <div className="text-tertiary-100  mt-2">
+            <span>and more...</span>
+          </div>
+        )}
       </div>
     </>
   );
