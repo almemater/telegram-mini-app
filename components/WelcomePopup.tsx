@@ -15,7 +15,7 @@ const WelcomePopup: React.FC<WelcomePopupProps> = ({ onClose, onSubmit }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg text-black">
+      <div className="glassmorphic-tertiary p-6 rounded-lg shadow-lg text-white">
         <h2 className="text-xl mb-4">Welcome to Our App!</h2>
         <p className="mb-4">We're glad to have you here.</p>
         <input

@@ -8,7 +8,7 @@ const userSchema = new Schema(
     username: { type: String, required: true, unique: true },
     language_code: { type: String },
     is_premium: { type: Boolean, default: false },
-    points: { type: Number, default: 0 },
+    // points: { type: Number, default: 0 },
     completedTasks: [{ type: Number }],
     referralCode: { type: String, unique: true }, 
     referrals: { type: [{ type: String }], default: [] }, 

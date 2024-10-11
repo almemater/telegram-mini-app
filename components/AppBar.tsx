@@ -1,25 +1,28 @@
 "use client";
 import { useUser } from "@/context/UserContext";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PointsUpdatePopup from "./PointsUpdatePopup";
 import Image from "next/image";
 import { GiTwoCoins } from "react-icons/gi";
+import MindmintCoin from "./MindmintCoin";
+import { PointsUpdatePopupProps } from "@/libs/types";
 
 const AppBar = () => {
-  const { userData, showPointsUpdatePopup } = useUser();
+  const { userData, pointsData, showPointsUpdatePopup } = useUser();
 
   useEffect(() => {
     console.log("Show Points Update Popup: ", showPointsUpdatePopup);
-  }, [userData, showPointsUpdatePopup]);
+
+  }, [userData, pointsData, showPointsUpdatePopup]);
 
   return (
     <>
-      <div className="z-10 bg-gradient-to-br from-primary via-secondary to-tertiary text-white px-4 pt-4 pb-14 flex justify-between items-center">
+      <div className="z-10 gradientbg text-white px-4 pt-4 pb-14 flex justify-between items-center">
         <Image src="/logo-white.svg" alt="MindmInt Logo" width={100} height={40} />
-        {userData && (
+        {userData && pointsData && (
           <div className="flex items-center glassmorphic p-2 rounded-lg">
             <span className="flex items-center">
-              <GiTwoCoins className="mr-1 text-yellow-400" /> {userData.points}
+              <MindmintCoin className="mr-1" /> {pointsData.points}
             </span>
             <span className="mx-2">|</span>
             <span className="">@{userData.username || "N/A"}</span>

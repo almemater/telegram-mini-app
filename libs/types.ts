@@ -8,10 +8,16 @@ export interface TGUserData {
 }
 
 export interface UserData extends TGUserData {
-  points: number;
   completedTasks: number[];
   referralCode: string;
   referrals: string[];
+}
+
+export interface PointsData {
+  id: number;
+  full_name: string;
+  username: string;
+  points: number;
 }
 
 export interface MemoryGameRecord {
@@ -38,7 +44,6 @@ export const sampleUserData: UserData = {
   username: "johndoe",
   language_code: "en",
   is_premium: false,
-  points: 0,
   completedTasks: [],
   referralCode: "ABC123",
   referrals: [],

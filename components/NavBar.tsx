@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { FaHome, FaDollarSign, FaTrophy, FaUser } from 'react-icons/fa';
+import { ReactSVG } from 'react-svg';
 
 const NavBar = () => {
   const [currentPage, setCurrentPage] = useState<string>('');
@@ -17,36 +17,48 @@ const NavBar = () => {
         <Link href="/">
           <button
             onClick={() => setCurrentPage('/')}
-            className={`flex flex-col items-center ${currentPage === '/' ? 'text-primary' : ''}`}
+            className={`flex flex-col items-center ${currentPage === '/' ? 'text-white' : 'text-[#5A5E61]'}`}
           >
-            <FaHome size={24} />
+            <ReactSVG
+              src="/nav-icons/Home.svg"
+              className={`w-6 h-6 ${currentPage === '/' ? 'fill-white' : 'fill-[#5A5E61]'}`}
+            />
             <span>Home</span>
           </button>
         </Link>
         <Link href="/earn">
           <button
             onClick={() => setCurrentPage('/earn')}
-            className={`flex flex-col items-center ${currentPage === '/earn' ? 'text-primary' : ''}`}
+            className={`flex flex-col items-center ${currentPage === '/earn' ? 'text-white' : 'text-[#5A5E61]'}`}
           >
-            <FaDollarSign size={24} />
+            <ReactSVG
+              src="/nav-icons/Task.svg"
+              className={`w-6 h-6 ${currentPage === '/earn' ? 'fill-white' : 'fill-[#5A5E61]'}`}
+            />
             <span>Earn</span>
           </button>
         </Link>
         <Link href="/rank">
           <button
-            onClick={() => setCurrentPage('/leaderboard')}
-            className={`flex flex-col items-center ${currentPage === '/leaderboard' ? 'text-primary' : ''}`}
+            onClick={() => setCurrentPage('/rank')}
+            className={`flex flex-col items-center ${currentPage === '/rank' ? 'text-white' : 'text-[#5A5E61]'}`}
           >
-            <FaTrophy size={24} />
+            <ReactSVG
+              src="/nav-icons/Leaderboard.svg"
+              className={`w-6 h-6 ${currentPage === '/rank' ? 'fill-white' : 'fill-[#5A5E61]'}`}
+            />
             <span>Rank</span>
           </button>
         </Link>
         <Link href="/profile">
           <button
             onClick={() => setCurrentPage('/profile')}
-            className={`flex flex-col items-center ${currentPage === '/profile' ? 'text-primary' : ''}`}
+            className={`flex flex-col items-center ${currentPage === '/profile' ? 'text-white' : 'text-[#5A5E61]'}`}
           >
-            <FaUser size={24} />
+            <ReactSVG
+              src="/nav-icons/Profile.svg"
+              className={`w-6 h-6 ${currentPage === '/profile' ? 'fill-white' : 'fill-[#5A5E61]'}`}
+            />
             <span>Profile</span>
           </button>
         </Link>

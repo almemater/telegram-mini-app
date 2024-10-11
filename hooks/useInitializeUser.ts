@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import WebApp from "@twa-dev/sdk";
 import {
   PointsUpdatePopupProps,
+  PointsData,
   TGUserData,
   UserData,
   sampleUserData,
@@ -10,6 +11,7 @@ import { premiumUserTask, rewardPoints } from "@/libs/constants";
 
 export const useInitializeUser = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [pointsData, setPointsData] = useState<PointsData | null>(null);
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [showWelcomePopup, setShowWelcomePopup] = useState<boolean>(false);
   const [showPointsUpdatePopup, setShowPointsUpdatePopup] =
@@ -40,6 +42,7 @@ export const useInitializeUser = () => {
         if (response.ok) {
           const userData = await response.json();
           setUserData(userData.user);
+          setPointsData(userData.pointsdata);
           // setShowPopup(true);
         } else {
           const createUserResponse = await fetch("/api/users/createUser", {
@@ -62,12 +65,13 @@ export const useInitializeUser = () => {
           if (createUserResponse.ok) {
             const newUser = await createUserResponse.json();
             setUserData(newUser.user);
+            setPointsData(newUser.pointsdata);
 
             if (user.is_premium) {
               const task = premiumUserTask;
 
               try {
-                const response = await fetch("/api/users/updatePoints", {
+                const response = await fetch("/api/points/updatePoints", {
                   method: "POST",
                   headers: {
                     "Content-Type": "application/json",
@@ -85,6 +89,7 @@ export const useInitializeUser = () => {
 
                 const updatedUser = await response.json();
                 setUserData(updatedUser.user);
+                setPointsData(updatedUser.pointsdata);
 
                 setShowPointsUpdatePopup({
                   message: "Congratulations! Your wallet has been connected.",
@@ -131,7 +136,7 @@ export const useInitializeUser = () => {
           const data = await response.json();
           setUserData(data.referee);
           setShowPointsUpdatePopup({
-            message: `You were referred by ${data.referrer.first_name}`,
+            message: `You were referred by ${data.referrer.full_name}`,
             points: rewardPoints.referFriend,
             buttonText: "Close",
             onClose: () => setShowPointsUpdatePopup(null),
@@ -152,6 +157,8 @@ export const useInitializeUser = () => {
   return {
     userData,
     setUserData,
+    pointsData,
+    setPointsData,
     showPopup,
     setShowPopup,
     showWelcomePopup,

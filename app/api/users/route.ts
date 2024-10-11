@@ -7,10 +7,10 @@ export async function POST(request: NextRequest) {
     // Connect to MongoDB
     await connectMongoDB();
 
-    // Fetch all users using lean() for better performance
+    // Fetch all users in descending order of points
     const users = await User.find(
       {},
-      { first_name: 1, last_name: 1, username: 1, points: 1 }
+      { first_name: 1, last_name: 1, username: 1 }
     );
 
     

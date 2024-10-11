@@ -1,7 +1,6 @@
 "use client";
-
 import { useUser } from "@/context/UserContext";
-import { tasks, walletConnectTask } from "@/libs/constants";
+import { rewardPoints, tasks, walletConnectTask } from "@/libs/constants";
 import WebApp from "@twa-dev/sdk";
 import { useEffect, useState } from "react";
 import { FaArrowRight, FaShareAlt } from "react-icons/fa";
@@ -9,10 +8,18 @@ import { TonConnectButton, useTonWallet } from "@tonconnect/ui-react";
 import { Task } from "@/libs/types";
 import PageHeader from "@/components/PageHeader";
 import { IoCopy } from "react-icons/io5";
-import { GiTwoCoins } from "react-icons/gi";
+import RewardsProgramPopup from "@/components/RewardsProgramPopup"; // Assuming you have a Modal component
+import Image from "next/image";
+import MindmintCoin from "@/components/MindmintCoin";
 
 const EarnPage = () => {
-  const { userData, setUserData, setShowPointsUpdatePopup } = useUser();
+  const {
+    userData,
+    setUserData,
+    pointsData,
+    setPointsData,
+    setShowPointsUpdatePopup,
+  } = useUser();
 
   if (!userData) {
     return <div>Loading...</div>;
@@ -24,6 +31,7 @@ const EarnPage = () => {
     { id: string; first_name: string; username: string }[]
   >([]);
   const [isWalletConnected, setIsWalletConnected] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // State for modal visibility
   const wallet = useTonWallet();
 
   const handleTaskCompletion = async (task: Task) => {
@@ -36,11 +44,8 @@ const EarnPage = () => {
       if (task.id === 100) {
         // Special handling for wallet connection task
         setTimeout(async () => {
-          // const newPoints = userData.points + task.points;
-          // const newCompletedTasks = [...userData.completedTasks, task.id];
-
           try {
-            const response = await fetch("/api/users/updatePoints", {
+            const response = await fetch("/api/points/updatePoints", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -58,6 +63,7 @@ const EarnPage = () => {
 
             const updatedUser = await response.json();
             setUserData(updatedUser.user);
+            setPointsData(updatedUser.pointsdata);
 
             setShowPointsUpdatePopup({
               message: "Congratulations! Your wallet has been connected.",
@@ -70,47 +76,45 @@ const EarnPage = () => {
             console.error("Error updating user data:", error);
           }
         }, 3000); // 3 seconds delay
-      }
-
-      if (typeof window !== "undefined") {
-        window.open(task.link, "_blank");
-      }
-
-      setTimeout(async () => {
-        // const newPoints = userData.points + task.points;
-        // const newCompletedTasks = [...userData.completedTasks, task.id];
-
-        try {
-          const response = await fetch("/api/users/updatePoints", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              id: userData.id,
-              points: task.points,
-              task: task.id,
-            }),
-          });
-
-          if (!response.ok) {
-            throw new Error("Failed to update user data");
-          }
-
-          const updatedUser = await response.json();
-          setUserData(updatedUser.user);
-
-          setShowPointsUpdatePopup({
-            message: "Task Completed!",
-            points: task.points,
-            buttonText: "Close",
-            onClose: () => setShowPointsUpdatePopup(null),
-            positive: true,
-          });
-        } catch (error) {
-          console.error("Error updating user data:", error);
+      } else {
+        if (typeof window !== "undefined") {
+          window.open(task.link, "_blank");
         }
-      }, 3000); // 3 seconds delay
+
+        setTimeout(async () => {
+          try {
+            const response = await fetch("/api/points/updatePoints", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                id: userData.id,
+                points: task.points,
+                task: task.id,
+              }),
+            });
+
+            if (!response.ok) {
+              throw new Error("Failed to update user data");
+            }
+
+            const updatedUser = await response.json();
+            setUserData(updatedUser.user);
+            setPointsData(updatedUser.pointsdata);
+
+            setShowPointsUpdatePopup({
+              message: "Task Completed!",
+              points: task.points,
+              buttonText: "Close",
+              onClose: () => setShowPointsUpdatePopup(null),
+              positive: true,
+            });
+          } catch (error) {
+            console.error("Error updating user data:", error);
+          }
+        }, 3000); // 3 seconds delay
+      }
     }
   };
 
@@ -211,33 +215,45 @@ const EarnPage = () => {
     <>
       <PageHeader title="Earn" description="Claim points for tasks" />
       <div className="px-4 mb-8 mt-4">
-        {/* <h1 className="text-2xl font-bold mb-4">Earn with Tasks</h1> */}
         <ul>
           {tasks.map((task) => (
             <li
               key={task.id}
               className="mb-2 flex justify-between items-center"
             >
-              <span>{task.name}</span>
+              <span className="w-2/3">{task.name}</span>
               <button
                 onClick={() => handleTaskCompletion(task)}
                 disabled={userData.completedTasks.includes(task.id)}
-                className={`ml-4 px-4 py-2 rounded ${
+                className={`px-4 py-2 rounded ${
                   userData.completedTasks.includes(task.id)
                     ? "bg-gradient-to-b from-gray-200 to-gray-400 shadow-md cursor-not-allowed"
                     : "btn-primary"
                 }`}
               >
-                {userData.completedTasks.includes(task.id)
-                  ? "Completed"
-                  : 
-                    <div className="flex items-center justify-center">
-                    <GiTwoCoins className="mr-2 text-yellow-400"/>{task.points} <FaArrowRight className="ml-2" />
-                    </div>
-                  }
+                {userData.completedTasks.includes(task.id) ? (
+                  "Completed"
+                ) : (
+                  <div className="flex items-center justify-center">
+                    <MindmintCoin className="mr-2" />
+                    {task.points} <FaArrowRight className="ml-2" />
+                  </div>
+                )}
               </button>
             </li>
           ))}
+          <li
+            id="ton-connect-list-item"
+            className="mb-2 flex justify-between items-center"
+          >
+            <span>Your Weekly Rewards</span>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="btn-primary"
+            >
+              <div className="flex items-center justify-center">View</div>
+            </button>
+          </li>
           <li
             id="ton-connect-list-item"
             className="mb-2 flex justify-between items-center"
@@ -256,10 +272,27 @@ const EarnPage = () => {
 
         <div className="my-4 border border-gray-300" />
 
-        <h1 className="text-3xl tracking-wider font-bold mb-4">Refer a friend</h1>
-        <div className="glassmorphic p-4  text-white">
+        {/* Reward Program Button */}
+        {/* <div >
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="w-full justify-center py-2 btn-primary text-white flex items-center"
+          >
+            Reward Program
+          </button>
+        </div>
+        
+        <div className="my-4 border border-gray-300" /> */}
+
+        <h1 className="text-3xl tracking-wider font-bold mb-4">
+          Refer a friend
+        </h1>
+        <div className="glassmorphic p-4  text-white ">
           <p className="text-lg font-semibold">
-            Invite your friends and earn rewards!
+            <span>Invite your friends and earn </span>
+            <span className="inline-flex justify-center items-center ">
+              {rewardPoints.referFriend} <MindmintCoin className="ml-2" />
+            </span>
           </p>
           {referralCode ? (
             <div>
@@ -286,7 +319,9 @@ const EarnPage = () => {
           )}
         </div>
 
-        <h1 className="text-2xl tracking-wider font-semibold my-4">Referred Users</h1>
+        <h1 className="text-2xl tracking-wider font-semibold my-4">
+          Referred Users
+        </h1>
         <div className="text-light">
           {referredUsers.length > 0 ? (
             <ol className="list-decimal list-inside">
@@ -301,6 +336,10 @@ const EarnPage = () => {
           )}
         </div>
       </div>
+      {/* Reward Program Modal */}
+      {isModalOpen && (
+        <RewardsProgramPopup onClose={() => setIsModalOpen(false)} />
+      )}
     </>
   );
 };
