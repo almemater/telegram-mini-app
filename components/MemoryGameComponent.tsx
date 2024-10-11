@@ -14,6 +14,7 @@ import MindmintCoin from "./MindmintCoin";
 
 const stationeryItems = ["✏️", "🖊️", "📏", "📐", "📎", "🖇️", "📌", "🗑️"];
 const initialCards = [...stationeryItems, ...stationeryItems];
+const GAME_TIME_SECONDS = 60;
 
 const shuffleArray = (array: string[]) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -29,7 +30,7 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
   const [matchedCards, setMatchedCards] = useState<number[]>([]);
   const [matchedPairs, setMatchedPairs] = useState<number>(0);
-  const [timeLeft, setTimeLeft] = useState<number>(60);
+  const [timeLeft, setTimeLeft] = useState<number>(GAME_TIME_SECONDS);
   const [score, setScore] = useState<number>(0);
   const [timerInterval, setTimerInterval] = useState<NodeJS.Timeout | null>(
     null
@@ -53,8 +54,9 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
     const interval = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 1) {
-          clearInterval(interval);
+          console.log("Time's up!");
           endGame(false);
+          clearInterval(interval);
           return 0;
         }
         return prev - 1;
@@ -79,7 +81,7 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
         setIsGameActive(false);
         if (timerInterval) clearInterval(timerInterval);
       }
-      setTimeLeft(60);
+      setTimeLeft(GAME_TIME_SECONDS);
       setScore(0);
       setMatchedPairs(0);
       setFlippedCards([]);
@@ -154,7 +156,7 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
   };
 
   const endGame = async (isWin: boolean) => {
-    setIsGameActive(false);
+    setIsLoading(true);
     const finalScore = await calculateFinalScore(isWin, timeLeft);
 
     if (userData && gameId) {
@@ -162,10 +164,12 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
         gameId,
         userId: userData.id.toString(),
         score: finalScore,
-        timeTaken: 60 - timeLeft,
+        timeTaken: GAME_TIME_SECONDS - timeLeft,
         flips,
         isWin,
       };
+
+      console.log("Game Record: ", gameRecord);
 
       // Save game record
       await fetch("/api/memoryGames/saveGameRecord", {
@@ -202,9 +206,13 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
         console.error("Error updating user data");
       }
     }
-
+    
     if (timerInterval) await clearInterval(timerInterval);
-    setTimeout(() => initializeGame(false), 1000);
+    setTimeout(() => {
+      initializeGame(false);
+      setIsGameActive(false);
+      setIsLoading(false);
+    }, 1000);
   };
 
   return (

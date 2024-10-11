@@ -9,11 +9,19 @@ import { PointsUpdatePopupProps } from "@/libs/types";
 
 const AppBar = () => {
   const { userData, pointsData, showPointsUpdatePopup } = useUser();
+  // const [showDebugPopup, setShowDebugPopup] = useState(true);
 
   useEffect(() => {
     console.log("Show Points Update Popup: ", showPointsUpdatePopup);
-
   }, [userData, pointsData, showPointsUpdatePopup]);
+
+  // const samplePopupData: PointsUpdatePopupProps = {
+  //   message: "Congratulations!",
+  //   points: 100,
+  //   buttonText: "Close",
+  //   onClose: () => setShowDebugPopup(false),
+  //   positive: true,
+  // };
 
   return (
     <>
@@ -32,6 +40,9 @@ const AppBar = () => {
       {showPointsUpdatePopup && (
         <PointsUpdatePopup {...showPointsUpdatePopup} />
       )}
+      {/* {showDebugPopup && (
+        <PointsUpdatePopup {...samplePopupData} />
+      )} */}
     </>
   );
 };
