@@ -1,51 +1,93 @@
 "use client";
-import PageHeader from "@/components/PageHeader";
+import MindmintCoin from "@/components/MindmintCoin";
+import RankPageHeader from "@/components/RankPageHeader";
 import { useUser } from "@/context/UserContext";
-import { UserData } from "@/libs/types";
+import { BestGameRecordTypes } from "@/libs/constants";
+import { formatName } from "@/libs/generators";
+import { PointsData } from "@/libs/types";
 import { useEffect, useState } from "react";
 import { FaMedal } from "react-icons/fa";
-import { GiTwoCoins } from "react-icons/gi";
 
 const RankPage = () => {
-  const { userData } = useUser();
-  const [users, setUsers] = useState<UserData[]>([]);
+  const { userData, pointsData } = useUser();
+  const [users, setUsers] = useState<PointsData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [bestGameScore, setBestGameScore] = useState<number>(0);
+  const [bestGameScoreLoading, setBestGameScoreLoading] = useState<boolean>(true);
+  const [userRank, setUserRank] = useState<number | null>(null);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchUsersAndRank = async () => {
+      if (!userData) {
+        console.error("User data is not available");
+        return;
+      }
       setLoading(true);
       try {
-        const response = await fetch("/api/users", {
+        const response = await fetch("/api/points", {
           method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: userData.id }),
         });
         if (response.ok) {
           const data = await response.json();
-          const sortedUsers = data.users.sort(
-            (a: UserData, b: UserData) => b.points - a.points
-          );
-          setUsers(sortedUsers);
+          setUsers(data.pointsdata);
+          setUserRank(data.userRank);
         } else {
-          console.error("Error fetching users");
+          console.error("Error fetching users and rank");
         }
       } catch (error) {
-        console.error("Error fetching users:", error);
+        console.error("Error fetching users and rank:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUsers();
-  }, []);
+    const fetchBestGameScore = async () => {
+      if (!userData) {
+        console.error("User data is not available");
+        return;
+      }
+      setBestGameScoreLoading(true);
+      try {
+        const response = await fetch("/api/memoryGames/getGameRecord", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: userData.id, type: BestGameRecordTypes.HIGHSCORE }),
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setBestGameScore(data.gameRecord.score);
+        } else {
+          console.error("Error fetching best game score");
+        }
+      } catch (error) {
+        console.error("Error fetching best game score:", error);
+      } finally {
+        setBestGameScoreLoading(false);
+      }
+    };
 
-  if (loading || !userData) {
+    fetchUsersAndRank();
+    fetchBestGameScore();
+  }, [userData]);
+
+  if (!userData || !pointsData || loading) {
     return <div>Loading...</div>;
   }
 
   return (
     <>
-      <PageHeader title="Leaderboard" description="Check out the top performers" />
+      <RankPageHeader
+        points={pointsData.points}
+        rank={userRank || "..."}
+        // bestGameScore={bestGameScoreLoading ? "..." : bestGameScore}
+      />
       <div className="leaderboard mt-4 mb-8">
-        {/* <h1 className="text-2xl font-bold mb-4">Leaderboard</h1> */}
         <ul>
           {users.map((user, index) => (
             <li
@@ -60,15 +102,19 @@ const RankPage = () => {
               {index === 1 && <FaMedal className="text-gray-500 mr-2" />}
               {index === 2 && <FaMedal className="text-orange-500 mr-2" />}
               {index > 2 && <span className="mr-2">{index + 1}.</span>}
-              <span>
-                {user.first_name} {user.last_name}
-              </span>
-              <span className="ml-auto">
-                {user.points} <GiTwoCoins className="inline text-yellow-400" />
+              <span>{formatName(user.full_name)}</span>
+              <span className="ml-auto flex gap-1 justify-center items-center">
+                {user.points} 
+                <MindmintCoin />
               </span>
             </li>
           ))}
         </ul>
+        {users.length >= 50 && (
+          <div className="text-tertiary-100  mt-2">
+            <span>and more...</span>
+          </div>
+        )}
       </div>
     </>
   );

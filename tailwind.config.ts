@@ -27,6 +27,16 @@ const config: Config = {
         primary: ['SwitzerVariable', 'sans-serif'],
         secondary: ['DharmaGothicE', 'serif'],
       },
+      keyframes: {
+        'gradient-shift': {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
+      },
+      animation: {
+        'bg-gradient': 'gradient-shift 5s ease infinite',
+      },
     },
   },
   plugins: [],

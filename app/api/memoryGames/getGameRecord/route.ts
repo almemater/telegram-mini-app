@@ -20,6 +20,9 @@ export async function POST(request: NextRequest) {
     case BestGameRecordTypes.FLIPS:
       gameRecord = await MemoryGame.findOne({ userId }).sort({ flips: 1 });
       break;
+    case BestGameRecordTypes.HIGHSCORE:
+      gameRecord = await MemoryGame.findOne({ userId }).sort({ score: -1 });
+      break;
     default:
       return NextResponse.json(
         { message: "Invalid type" },
