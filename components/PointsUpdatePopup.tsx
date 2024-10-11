@@ -1,14 +1,7 @@
 import React from 'react';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
-
-interface PointsUpdatePopupProps {
-  message: string;
-  points: number;
-  buttonText: string;
-  onClose: () => void;
-  positive?: boolean;
-}
+import { PointsUpdatePopupProps } from '@/libs/types';
 
 const PointsUpdatePopup: React.FC<PointsUpdatePopupProps> = ({
   message,
@@ -19,9 +12,43 @@ const PointsUpdatePopup: React.FC<PointsUpdatePopupProps> = ({
 }) => {
   const { width, height } = useWindowSize();
 
+  const drawCoin = (ctx: CanvasRenderingContext2D) => {
+    const radius = 8;
+
+    // Draw the base circle with gradient for 3D effect
+    const gradient = ctx.createRadialGradient(0, 0, radius / 2, 0, 0, radius);
+    gradient.addColorStop(0, 'gold');
+    gradient.addColorStop(1, 'darkgoldenrod');
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+    ctx.fillStyle = gradient;
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'darkgoldenrod';
+    ctx.stroke();
+    ctx.closePath();
+
+    // Add shading for 3D effect
+    const shadingGradient = ctx.createRadialGradient(-radius / 2, -radius / 2, radius / 4, 0, 0, radius);
+    shadingGradient.addColorStop(0, 'rgba(255, 255, 255, 0.6)'); // Highlight
+    shadingGradient.addColorStop(1, 'rgba(0, 0, 0, 0.2)'); // Shadow
+    ctx.fillStyle = shadingGradient;
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.closePath();
+
+    // Draw the coin symbol
+    ctx.fillStyle = 'darkgoldenrod';
+    ctx.font = 'bold 10px Arial';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('AM', 0, 0);
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      {positive && <Confetti width={width} height={height} />}
+      {positive && <Confetti width={width} height={height} drawShape={drawCoin} />}
       <div className="glassmorphic-tertiary text-white shadow-lg p-4 rounded-lg w-4/5 max-w-md">
         <h2 className="text-2xl font-bold mb-2">{message}</h2>
         <p className="mb-4">
