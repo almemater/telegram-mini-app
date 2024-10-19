@@ -55,4 +55,5 @@ export interface PointsUpdatePopupProps {
   buttonText: string;
   onClose: () => void;
   positive?: boolean;
+  highScore?: number;
 }

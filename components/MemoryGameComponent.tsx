@@ -24,7 +24,7 @@ const shuffleArray = (array: string[]) => {
 };
 
 const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
-  const { userData, setUserData, pointsData, setPointsData } = useUser();
+  const { userData, setPointsData } = useUser();
 
   const [cards, setCards] = useState<string[]>([]);
   const [flippedCards, setFlippedCards] = useState<number[]>([]);
@@ -44,6 +44,7 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
   useEffect(() => {
     shuffleArray(initialCards);
     setCards([...initialCards]);
+
     return () => {
       if (timerInterval) clearInterval(timerInterval);
     };
@@ -172,24 +173,12 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
       console.log("Game Record: ", gameRecord);
 
       // Save game record
-      await fetch("/api/memoryGames/saveGameRecord", {
+      const response = await fetch("/api/memoryGames/saveGameRecord", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(gameRecord),
-      });
-
-      // Update user points
-      const response = await fetch("/api/points/updatePoints", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: userData.id,
-          points: finalScore,
-        }),
       });
 
       if (response.ok) {
@@ -201,12 +190,13 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
           buttonText: isWin ? "Yaay!" : "Close",
           onClose: () => setShowPointsUpdatePopup(null),
           positive: isWin,
+          highScore: updatedUser.globalGameData.highestScore,
         });
       } else {
         console.error("Error updating user data");
       }
     }
-    
+
     if (timerInterval) await clearInterval(timerInterval);
     setTimeout(() => {
       initializeGame(false);
@@ -222,7 +212,6 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
           <FaClock className="mr-2" /> <span id="timer">{timeLeft}</span> s
         </div>
         <div className="flex items-center">
-          {/* <FaStar className="mr-2 text-primary shadow-xl" />{" "} */}
           <MindmintCoin className="mr-2 shadow-xl" />{" "}
           <span id="score">{score}</span>
         </div>
