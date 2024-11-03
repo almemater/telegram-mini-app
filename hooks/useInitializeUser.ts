@@ -13,7 +13,6 @@ export const useInitializeUser = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [pointsData, setPointsData] = useState<PointsData | null>(null);
   const [showPopup, setShowPopup] = useState<boolean>(false);
-  const [showWelcomePopup, setShowWelcomePopup] = useState<boolean>(false);
   const [showPointsUpdatePopup, setShowPointsUpdatePopup] =
     useState<PointsUpdatePopupProps | null>(null);
   const [loading, setLoading] = useState<boolean>(true); // New loading state
@@ -105,9 +104,7 @@ export const useInitializeUser = () => {
 
             if (referralCode) {
               await handleReferral(referralCode, newUser.user.id);
-            } else {
-              // setShowWelcomePopup(true);
-            }
+            } 
           } else {
             console.error("Error creating user");
           }
@@ -161,8 +158,6 @@ export const useInitializeUser = () => {
     setPointsData,
     showPopup,
     setShowPopup,
-    showWelcomePopup,
-    setShowWelcomePopup,
     showPointsUpdatePopup,
     setShowPointsUpdatePopup,
     loading

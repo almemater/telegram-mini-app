@@ -1,7 +1,7 @@
 "use client";
 import { useUser } from "@/context/UserContext";
 import React, { useEffect, useState } from "react";
-import PointsUpdatePopup from "./PointsUpdatePopup";
+import PointsUpdatePopup from "./popups/PointsUpdatePopup";
 import Image from "next/image";
 import { GiTwoCoins } from "react-icons/gi";
 import MindmintCoin from "./MindmintCoin";

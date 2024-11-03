@@ -1,6 +1,6 @@
 import React from "react";
 import { FaTimes } from "react-icons/fa";
-import MindmintCoin from "./MindmintCoin";
+import MindmintCoin from "../MindmintCoin";
 
 interface RewardsProgramPopupProps {
   onClose: () => void;

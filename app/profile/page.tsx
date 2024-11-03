@@ -12,7 +12,7 @@ import {
   FaSyncAlt,
   FaTrophy,
 } from "react-icons/fa";
-import PageHeader from "@/components/PageHeader";
+import PageHeader from "@/components/headers/PageHeader";
 import CognitiveAssessment from "@/components/CognitiveAssessment";
 import { FaRepeat } from "react-icons/fa6";
 

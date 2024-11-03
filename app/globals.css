@@ -66,6 +66,45 @@ h6 {
   .btn-secondary:hover {
     @apply shadow-sm;
   }
+
+  .game-grid {
+    box-shadow:  20px 20px 60px #502b6f,-20px -20px 60px #6c3b97;
+  }
+
+  .card-unflipped {
+    @apply bg-gray-800 text-white flex items-center justify-center rounded shadow-lg;
+    background: linear-gradient(145deg, #65378c, #552e76);
+    /* box-shadow: 1px 1px 2px #5e3383; */
+  }
+
+  .card-flipped {
+    @apply bg-green-500 text-white flex items-center justify-center rounded shadow-lg;
+    background: linear-gradient(145deg, #1f2937, #3b4252);
+    /* box-shadow: 1px 1px 2px #1a202c; */
+  }
+
+  .glow-gold {
+    @apply text-yellow-500;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.4);
+  }
+
+  .glow-silver {
+    @apply text-gray-500;
+    box-shadow: 0 0 10px rgba(192, 192, 192, 0.8), 0 0 20px rgba(192, 192, 192, 0.6), 0 0 30px rgba(192, 192, 192, 0.4);
+  }
+
+  .glow-bronze {
+    @apply text-orange-500;
+    box-shadow: 0 0 10px rgba(205, 127, 50, 0.8), 0 0 20px rgba(205, 127, 50, 0.6), 0 0 30px rgba(205, 127, 50, 0.4);
+  }
+
+  .profile-circle {
+    @apply w-16 h-16 rounded-full border-2 flex items-center justify-center text-2xl font-bold;
+  }
+
+  .step {
+    @apply w-24 bg-gray-200 rounded-t-lg flex flex-col items-center pb-2 justify-end mt-2;
+  }
 }
 
 /* Glassmorphism */
@@ -79,4 +118,70 @@ h6 {
 
 .gradientbg {
   @apply bg-gradient-to-br from-primary to-tertiary via-secondary;
+}
+
+/* Add this to your global CSS file or within a <style> tag in your component */
+
+.card {
+  perspective: 1000px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card {
+  perspective: 1000px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s;
+  transform-style: preserve-3d;
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+}
+
+.card-back {
+  transform: rotateY(200deg);
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(160deg);
 }
