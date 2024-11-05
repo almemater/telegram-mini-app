@@ -175,12 +175,12 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
       <div className="flex glassmorphic justify-evenly px-2 py-4 gap-6 game-info mb-4 text-3xl text-center font-mono">
         <div className="flex items-center gap-2">
           <Image
-          src={"/icons/TimerIcon.svg"}
+          src={"/imgs/icons/TimerIcon.svg"}
           alt="Timer"
           height={40}
           width={40}
           />
-          {/* <ReactSVG src="/icons/TimerIcon.svg" className={`w-6 h-6 `} /> */}
+          {/* <ReactSVG src="/imgs/icons/TimerIcon.svg" className={`w-6 h-6 `} /> */}
           <span id="timer">{timeLeft===60 ? "01:00" : `${timeLeft}`}</span>
           {/* <FaClock className="mr-2" />  s */}
         </div>

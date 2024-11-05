@@ -34,16 +34,18 @@ export async function POST(request: NextRequest) {
       id,
       first_name,
       last_name,
-      username,
+      username: last_name || "",
       language_code,
       is_premium,
       completedTasks,
       referralCode,
     });
 
+    const full_name = last_name ? `${first_name} ${last_name}` : first_name;
+
     const newPointsData = await PointsData.create({
       id,
-      full_name: `${first_name} ${last_name}`,
+      full_name,
       username,
       points,
     });

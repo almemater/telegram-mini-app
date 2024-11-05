@@ -20,7 +20,7 @@ const NavBar = () => {
             className={`flex flex-col items-center ${currentPage === '/' ? 'text-white' : 'text-[#5A5E61]'}`}
           >
             <ReactSVG
-              src="/nav-icons/Home.svg"
+              src="/imgs/nav-icons/Home.svg"
               className={`w-6 h-6 ${currentPage === '/' ? 'fill-white' : 'fill-[#5A5E61]'}`}
             />
             <span>Home</span>
@@ -32,7 +32,7 @@ const NavBar = () => {
             className={`flex flex-col items-center ${currentPage === '/earn' ? 'text-white' : 'text-[#5A5E61]'}`}
           >
             <ReactSVG
-              src="/nav-icons/Task.svg"
+              src="/imgs/nav-icons/Task.svg"
               className={`w-6 h-6 ${currentPage === '/earn' ? 'fill-white' : 'fill-[#5A5E61]'}`}
             />
             <span>Earn</span>
@@ -44,7 +44,7 @@ const NavBar = () => {
             className={`flex flex-col items-center ${currentPage === '/rank' ? 'text-white' : 'text-[#5A5E61]'}`}
           >
             <ReactSVG
-              src="/nav-icons/Leaderboard.svg"
+              src="/imgs/nav-icons/Leaderboard.svg"
               className={`w-6 h-6 ${currentPage === '/rank' ? 'fill-white' : 'fill-[#5A5E61]'}`}
             />
             <span>Rank</span>
@@ -56,7 +56,7 @@ const NavBar = () => {
             className={`flex flex-col items-center ${currentPage === '/profile' ? 'text-white' : 'text-[#5A5E61]'}`}
           >
             <ReactSVG
-              src="/nav-icons/Profile.svg"
+              src="/imgs/nav-icons/Profile.svg"
               className={`w-6 h-6 ${currentPage === '/profile' ? 'fill-white' : 'fill-[#5A5E61]'}`}
             />
             <span>Profile</span>

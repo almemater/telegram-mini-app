@@ -10,7 +10,7 @@ interface MindmintCoinProps {
 const MindmintCoin: React.FC<MindmintCoinProps> = ({ className, height, width }) => {
   return (
     <Image
-      src="/coins/goldcoin.svg"
+      src="/imgs/coins/goldcoin.svg"
       alt="Coins"
       width={width || 20}
       height={height || 20}

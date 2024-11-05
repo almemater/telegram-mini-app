@@ -8,6 +8,7 @@ import TaskSection from "@/components/TaskSection";
 import ReferralSection from "@/components/ReferralSection";
 import ReferralRewards from "@/components/ReferralRewards";
 import WeeklyLeaderboardRewards from "@/components/WeeklyLeaderboardRewards";
+import Image from "next/image";
 
 const EarnPage = () => {
   const { userData } = useUser();
@@ -53,7 +54,15 @@ const EarnPage = () => {
               <h3 className="text-lg font-semibold mb-2 tracking-wider">
                 Cognitive Assessment
               </h3>
-              <p className="text-sm mb-4">SBT IMAGE/ICON </p>
+              {/* // SBT Image is in /imgs/SBT/GensisNFT.webp */}
+              <Image
+                src="/imgs/SBT/GensisNFT.webp"
+                alt="SBT"
+                width={200}
+                height={200}
+                className="mb-4 w-full rounded"
+              />
+
               <button className="btn-primary w-full py-2 mt-2">Mint SBT</button>
             </div>
 

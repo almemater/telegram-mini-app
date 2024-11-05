@@ -85,7 +85,7 @@ const RankPage = () => {
   }
 
   const topThreeUsers = users.slice(0, 3);
-  const otherUsers = users.slice(3);
+  // const otherUsers = users.slice(3);
 
   return (
     <>
@@ -94,44 +94,46 @@ const RankPage = () => {
         rank={userRank || "..."}
         // bestGameScore={bestGameScoreLoading ? "..." : bestGameScore}
       />
-      <TopThreeUsers users={topThreeUsers} />
-      <div className="leaderboard mb-4">
-        <table className="min-w-full bg-white text-black rounded-t-lg">
-          <thead className=" ">
-            <tr>
-              <th className="py-2">Rank</th>
-              <th className="py-2">User</th>
-              <th className="py-2">Points</th>
-            </tr>
-          </thead>
-          <tbody className="">
-            {users.map((user, index) => (
-              <>
-                <tr
-                  key={index}
-                  className={`text-center bg-black text-white  ${
-                    user.username === userData.username
-                      ? "font-extrabold text-primary"
-                      : ""
-                  }`}
-                >
-                  <td className="py-2 text-zinc-600">{index + 1}</td>
-                  <td className="py-2">{formatName(user.full_name)}</td>
-                  <td className="py-2 flex justify-center items-center gap-1">
-                    {user.points} <MindmintCoin />
-                  </td>
-                </tr>
-                <div className="border-b "/>
-              </>
-            ))}
-          </tbody>
-        </table>
-        {users.length >= 50 && (
-          <div className="text-tertiary-100 mt-2">
-            <span>and more...</span>
-          </div>
-        )}
-      </div>
+      {topThreeUsers.length > 2 && <TopThreeUsers users={topThreeUsers} />}
+      {users && (
+        <div className="leaderboard mb-4 absolute w-screen left-0">
+          <table className="min-w-full bg-white text-black rounded-t-lg">
+            <thead className=" ">
+              <tr>
+                <th className="py-2">Rank</th>
+                <th className="py-2">User</th>
+                <th className="py-2">Points</th>
+              </tr>
+            </thead>
+            <tbody className="">
+              {users.map((user, index) => (
+                <>
+                  <tr
+                    key={index}
+                    className={`text-center bg-black text-white  ${
+                      user.username === userData.username
+                        ? "font-extrabold text-primary"
+                        : ""
+                    }`}
+                  >
+                    <td className="py-2 text-zinc-600">{index + 1}</td>
+                    <td className="py-2">{formatName(user.full_name)}</td>
+                    <td className="py-2 flex justify-center items-center gap-1">
+                      {user.points} <MindmintCoin />
+                    </td>
+                  </tr>
+                  <div className="border-b " />
+                </>
+              ))}
+            </tbody>
+          </table>
+          {users.length >= 50 && (
+            <div className="text-tertiary-100 mt-2">
+              <span>and more...</span>
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 };
