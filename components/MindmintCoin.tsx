@@ -3,15 +3,17 @@ import Image from "next/image";
 
 interface MindmintCoinProps {
   className?: string;
+  height?: number;
+  width?: number;
 }
 
-const MindmintCoin: React.FC<MindmintCoinProps> = ({ className }) => {
+const MindmintCoin: React.FC<MindmintCoinProps> = ({ className, height, width }) => {
   return (
     <Image
-      src="/coins/goldcoin.svg"
+      src="/imgs/coins/goldcoin.svg"
       alt="Coins"
-      width={20}
-      height={20}
+      width={width || 20}
+      height={height || 20}
       className={`${className}`}
     />
   );

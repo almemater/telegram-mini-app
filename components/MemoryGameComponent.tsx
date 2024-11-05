@@ -5,12 +5,14 @@ import {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { UserData, MemoryGameRecord } from "@/libs/types";
 import { useUser } from "@/context/UserContext";
 import { generateGameId } from "@/libs/generators";
-import { FaClock, FaStar, FaSyncAlt, FaPlay, FaStop } from "react-icons/fa";
+import { FaClock } from "react-icons/fa";
 import { FaRepeat } from "react-icons/fa6";
 import MindmintCoin from "./MindmintCoin";
+import GameGrid from "./memory_game/GameGrid";
+import { ReactSVG } from "react-svg";
+import Image from "next/image";
 
 const stationeryItems = ["✏️", "🖊️", "📏", "📐", "📎", "🖇️", "📌", "🗑️"];
 const initialCards = [...stationeryItems, ...stationeryItems];
@@ -24,11 +26,9 @@ const shuffleArray = (array: string[]) => {
 };
 
 const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
-  const { userData, setUserData, pointsData, setPointsData } = useUser();
+  const { userData, setPointsData } = useUser();
 
   const [cards, setCards] = useState<string[]>([]);
-  const [flippedCards, setFlippedCards] = useState<number[]>([]);
-  const [matchedCards, setMatchedCards] = useState<number[]>([]);
   const [matchedPairs, setMatchedPairs] = useState<number>(0);
   const [timeLeft, setTimeLeft] = useState<number>(GAME_TIME_SECONDS);
   const [score, setScore] = useState<number>(0);
@@ -44,6 +44,7 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
   useEffect(() => {
     shuffleArray(initialCards);
     setCards([...initialCards]);
+
     return () => {
       if (timerInterval) clearInterval(timerInterval);
     };
@@ -84,8 +85,6 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
       setTimeLeft(GAME_TIME_SECONDS);
       setScore(0);
       setMatchedPairs(0);
-      setFlippedCards([]);
-      setMatchedCards([]);
       setFlips(0);
       shuffleArray(initialCards);
       setCards([...initialCards]);
@@ -100,40 +99,6 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
   const stopGame = () => {
     initializeGame(false);
   };
-
-  const flipCard = (index: number) => {
-    if (!isGameActive || isLoading) return;
-    if (
-      flippedCards.length < 2 &&
-      !flippedCards.includes(index) &&
-      !matchedCards.includes(index)
-    ) {
-      setFlippedCards((prev) => [...prev, index]);
-      setFlips((prev) => prev + 1);
-    }
-  };
-
-  useEffect(() => {
-    if (flippedCards.length === 2) {
-      const [firstIndex, secondIndex] = flippedCards;
-      if (cards[firstIndex] === cards[secondIndex]) {
-        setMatchedPairs((prev) => {
-          const newMatchedPairs = prev + 1;
-          if (newMatchedPairs === stationeryItems.length) {
-            endGame(true);
-          }
-          return newMatchedPairs;
-        });
-        setScore((prev) => prev + 10);
-        setMatchedCards((prev) => [...prev, firstIndex, secondIndex]);
-        setFlippedCards([]);
-      } else {
-        setTimeout(() => {
-          setFlippedCards([]);
-        }, 500);
-      }
-    }
-  }, [flippedCards, cards]);
 
   const calculateFinalScore = async (
     isWin: boolean,
@@ -160,7 +125,7 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
     const finalScore = await calculateFinalScore(isWin, timeLeft);
 
     if (userData && gameId) {
-      const gameRecord: MemoryGameRecord = {
+      const gameRecord = {
         gameId,
         userId: userData.id.toString(),
         score: finalScore,
@@ -172,24 +137,12 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
       console.log("Game Record: ", gameRecord);
 
       // Save game record
-      await fetch("/api/memoryGames/saveGameRecord", {
+      const response = await fetch("/api/memoryGames/saveGameRecord", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(gameRecord),
-      });
-
-      // Update user points
-      const response = await fetch("/api/points/updatePoints", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: userData.id,
-          points: finalScore,
-        }),
       });
 
       if (response.ok) {
@@ -201,12 +154,13 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
           buttonText: isWin ? "Yaay!" : "Close",
           onClose: () => setShowPointsUpdatePopup(null),
           positive: isWin,
+          highScore: updatedUser.globalGameData.highest_score,
         });
       } else {
         console.error("Error updating user data");
       }
     }
-    
+
     if (timerInterval) await clearInterval(timerInterval);
     setTimeout(() => {
       initializeGame(false);
@@ -216,37 +170,41 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="flex glassmorphic px-4 py-2 gap-6 game-info mb-4 text-xl text-center">
-        <div className="flex items-center">
-          <FaClock className="mr-2" /> <span id="timer">{timeLeft}</span> s
+    <div className="flex flex-col items-center w-full justify-center">
+      <div className="px-2 w-full">
+      <div className="flex glassmorphic justify-evenly px-2 py-4 gap-6 game-info mb-4 text-3xl text-center font-mono">
+        <div className="flex items-center gap-2">
+          <Image
+          src={"/imgs/icons/TimerIcon.svg"}
+          alt="Timer"
+          height={40}
+          width={40}
+          />
+          {/* <ReactSVG src="/imgs/icons/TimerIcon.svg" className={`w-6 h-6 `} /> */}
+          <span id="timer">{timeLeft===60 ? "01:00" : `${timeLeft}`}</span>
+          {/* <FaClock className="mr-2" />  s */}
         </div>
-        <div className="flex items-center">
-          {/* <FaStar className="mr-2 text-primary shadow-xl" />{" "} */}
-          <MindmintCoin className="mr-2 shadow-xl" />{" "}
-          <span id="score">{score}</span>
+        <div className="flex items-center border border-zinc-500 rounded " />
+        <div className="flex items-center gap-2">
+          <MindmintCoin className=" shadow-xl" height={40} width={40} />{" "}
+          <span id="score">{score}P</span>
         </div>
-        <div className="flex items-center">
+        {/* <div className="flex items-center">
           <FaRepeat className="mr-2" /> <span id="flips">{flips}</span>
-        </div>
+        </div> */}
       </div>
-      <div className="game-container grid grid-cols-4 gap-2">
-        {cards.map((item, index) => (
-          <div
-            key={index}
-            className={`card rounded w-20 h-20 flex items-center justify-center text-2xl cursor-pointer transition-transform transform ${
-              flippedCards.includes(index) || matchedCards.includes(index)
-                ? "rotate-y-180 bg-green-500"
-                : "bg-dark-100"
-            }`}
-            onClick={() => flipCard(index)}
-          >
-            {flippedCards.includes(index) || matchedCards.includes(index)
-              ? item
-              : ""}
-          </div>
-        ))}
       </div>
+        
+      <GameGrid
+        cards={cards}
+        onEndGame={endGame}
+        isGameActive={isGameActive}
+        isLoading={isLoading}
+        setFlips={setFlips}
+        setScore={setScore}
+        setMatchedPairs={setMatchedPairs}
+        stationeryItems={stationeryItems}
+      />
       <div className="buttons mt-4">
         {!isGameActive ? (
           <button

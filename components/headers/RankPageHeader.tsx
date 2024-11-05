@@ -1,5 +1,5 @@
 import React from "react";
-import MindmintCoin from "./MindmintCoin";
+import MindmintCoin from "../MindmintCoin";
 import { PiRankingDuotone } from "react-icons/pi";
 
 interface RankPageHeaderProps {

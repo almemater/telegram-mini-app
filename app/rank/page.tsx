@@ -1,19 +1,20 @@
 "use client";
 import MindmintCoin from "@/components/MindmintCoin";
-import RankPageHeader from "@/components/RankPageHeader";
+import RankPageHeader from "@/components/headers/RankPageHeader";
 import { useUser } from "@/context/UserContext";
 import { BestGameRecordTypes } from "@/libs/constants";
 import { formatName } from "@/libs/generators";
 import { PointsData } from "@/libs/types";
 import { useEffect, useState } from "react";
-import { FaMedal } from "react-icons/fa";
+import TopThreeUsers from "@/components/leaderboard/TopThreeUsers";
 
 const RankPage = () => {
   const { userData, pointsData } = useUser();
   const [users, setUsers] = useState<PointsData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [bestGameScore, setBestGameScore] = useState<number>(0);
-  const [bestGameScoreLoading, setBestGameScoreLoading] = useState<boolean>(true);
+  const [bestGameScoreLoading, setBestGameScoreLoading] =
+    useState<boolean>(true);
   const [userRank, setUserRank] = useState<number | null>(null);
 
   useEffect(() => {
@@ -57,7 +58,10 @@ const RankPage = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ userId: userData.id, type: BestGameRecordTypes.HIGHSCORE }),
+          body: JSON.stringify({
+            userId: userData.id,
+            type: BestGameRecordTypes.HIGHSCORE,
+          }),
         });
         if (response.ok) {
           const data = await response.json();
@@ -80,6 +84,9 @@ const RankPage = () => {
     return <div>Loading...</div>;
   }
 
+  const topThreeUsers = users.slice(0, 3);
+  // const otherUsers = users.slice(3);
+
   return (
     <>
       <RankPageHeader
@@ -87,35 +94,46 @@ const RankPage = () => {
         rank={userRank || "..."}
         // bestGameScore={bestGameScoreLoading ? "..." : bestGameScore}
       />
-      <div className="leaderboard mt-4 mb-8">
-        <ul>
-          {users.map((user, index) => (
-            <li
-              key={index}
-              className={`flex justify-center items-center mb-2 ${
-                user.username === userData.username
-                  ? "font-extrabold text-primary"
-                  : ""
-              }`}
-            >
-              {index === 0 && <FaMedal className="text-yellow-500 mr-2" />}
-              {index === 1 && <FaMedal className="text-gray-500 mr-2" />}
-              {index === 2 && <FaMedal className="text-orange-500 mr-2" />}
-              {index > 2 && <span className="mr-2">{index + 1}.</span>}
-              <span>{formatName(user.full_name)}</span>
-              <span className="ml-auto flex gap-1 justify-center items-center">
-                {user.points} 
-                <MindmintCoin />
-              </span>
-            </li>
-          ))}
-        </ul>
-        {users.length >= 50 && (
-          <div className="text-tertiary-100  mt-2">
-            <span>and more...</span>
-          </div>
-        )}
-      </div>
+      {topThreeUsers.length > 2 && <TopThreeUsers users={topThreeUsers} />}
+      {users && (
+        <div className="leaderboard mb-4 absolute w-screen left-0">
+          <table className="min-w-full bg-white text-black rounded-t-lg">
+            <thead className=" ">
+              <tr>
+                <th className="py-2">Rank</th>
+                <th className="py-2">User</th>
+                <th className="py-2">Points</th>
+              </tr>
+            </thead>
+            <tbody className="">
+              {users.map((user, index) => (
+                <>
+                  <tr
+                    key={index}
+                    className={`text-center bg-black text-white  ${
+                      user.username === userData.username
+                        ? "font-extrabold text-primary"
+                        : ""
+                    }`}
+                  >
+                    <td className="py-2 text-zinc-600">{index + 1}</td>
+                    <td className="py-2">{formatName(user.full_name)}</td>
+                    <td className="py-2 flex justify-center items-center gap-1">
+                      {user.points} <MindmintCoin />
+                    </td>
+                  </tr>
+                  <div className="border-b " />
+                </>
+              ))}
+            </tbody>
+          </table>
+          {users.length >= 50 && (
+            <div className="text-tertiary-100 mt-2">
+              <span>and more...</span>
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 };

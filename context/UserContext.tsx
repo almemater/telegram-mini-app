@@ -10,8 +10,6 @@ interface UserContextType {
   setPointsData: (point: PointsData | null) => void;
   showPopup: boolean;
   setShowPopup: (show: boolean) => void;
-  showWelcomePopup: boolean;
-  setShowWelcomePopup: (show: boolean) => void;
   showPointsUpdatePopup: PointsUpdatePopupProps | null;
   setShowPointsUpdatePopup: (popup: PointsUpdatePopupProps | null) => void;
   loading: boolean;
@@ -27,8 +25,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     setPointsData,
     showPopup,
     setShowPopup,
-    showWelcomePopup,
-    setShowWelcomePopup,
     showPointsUpdatePopup,
     setShowPointsUpdatePopup,
     loading,
@@ -43,8 +39,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         setPointsData,
         showPopup,
         setShowPopup,
-        showWelcomePopup,
-        setShowWelcomePopup,
         showPointsUpdatePopup,
         setShowPointsUpdatePopup,
         loading,
