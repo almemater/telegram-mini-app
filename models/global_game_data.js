@@ -2,7 +2,7 @@ import mongoose, { Schema } from "mongoose";
 
 const globalGameDataSchema = new Schema(
   {
-    highestScore: { type: Number, default: 0 },
+    highest_score: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

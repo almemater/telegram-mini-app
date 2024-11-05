@@ -43,9 +43,9 @@ export async function POST(request: NextRequest) {
     // Update global highest score if the current score is higher
     let globalGameData = await GlobalGameData.findOne();
     if (!globalGameData) {
-      globalGameData = new GlobalGameData({ highestScore: score });
-    } else if (score > globalGameData.highestScore) {
-      globalGameData.highestScore = score;
+      globalGameData = new GlobalGameData({ highest_score: score });
+    } else if (score > globalGameData.highest_score) {
+      globalGameData.highest_score = score;
     }
     await globalGameData.save();
 

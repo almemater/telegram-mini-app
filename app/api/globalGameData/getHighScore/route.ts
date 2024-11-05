@@ -7,7 +7,7 @@ export async function GET() {
 
   try {
     const globalGameData = await GlobalGameData.findOne();
-    return NextResponse.json(globalGameData || { highestScore: 0 });
+    return NextResponse.json(globalGameData || { highest_score: 0 });
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch highest score" }, { status: 500 });
   }

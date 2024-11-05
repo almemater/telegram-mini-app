@@ -12,7 +12,7 @@ const WeeklyLeaderboardRewards = () => {
   useEffect(() => {
     const fetchLeaderboardData = async () => {
       try {
-        const response = await fetch("/api/points/weeklyLeaderboard");
+        const response = await fetch("/api/points/weeklyMetrics");
         if (!response.ok) {
           throw new Error("Failed to fetch leaderboard data");
         }

@@ -29,8 +29,8 @@ export async function GET(request: NextRequest) {
 
     const topScorer = await MemoryGame.aggregate([
       { $match: { createdAt: { $gte: startOfWeek, $lte: endOfWeek } } },
-      { $group: { _id: "$userId", highestScore: { $max: "$score" } } },
-      { $sort: { highestScore: -1 } },
+      { $group: { _id: "$userId", highest_score: { $max: "$score" } } },
+      { $sort: { highest_score: -1 } },
       { $limit: 1 },
     ]);
 

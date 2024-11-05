@@ -6,14 +6,14 @@ import GlobalGameData from "@/models/global_game_data";
 export async function POST(request: NextRequest) {
     await connectMongoDB();
   
-    const { highestScore } = await request.json();
+    const { highest_score } = await request.json();
   
     try {
       let globalGameData = await GlobalGameData.findOne();
       if (!globalGameData) {
-        globalGameData = new GlobalGameData({ highestScore });
-      } else if (highestScore > globalGameData.highestScore) {
-        globalGameData.highestScore = highestScore;
+        globalGameData = new GlobalGameData({ highest_score });
+      } else if (highest_score > globalGameData.highest_score) {
+        globalGameData.highest_score = highest_score;
       }
       await globalGameData.save();
       return NextResponse.json({globalGameData});

@@ -154,7 +154,7 @@ const MemoryGameComponent = forwardRef<unknown>((props, ref) => {
           buttonText: isWin ? "Yaay!" : "Close",
           onClose: () => setShowPointsUpdatePopup(null),
           positive: isWin,
-          highScore: updatedUser.globalGameData.highestScore,
+          highScore: updatedUser.globalGameData.highest_score,
         });
       } else {
         console.error("Error updating user data");
