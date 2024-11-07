@@ -1,3 +1,4 @@
+"use client";
 import { useState, useEffect } from "react";
 import { FaShareAlt } from "react-icons/fa";
 import { IoCopy } from "react-icons/io5";

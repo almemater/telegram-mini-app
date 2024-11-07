@@ -7,6 +7,7 @@ type ConnectionObject = {
 const connection: ConnectionObject = {};
 
 async function connectMongoDB(): Promise<void> {
+  console.log("Connecting to DB");
   if (connection.isConnected) {
     return;
   }
