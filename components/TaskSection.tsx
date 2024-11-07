@@ -1,3 +1,4 @@
+"use client";
 import { useEffect, useState } from "react";
 import { FaArrowRight } from "react-icons/fa";
 import { TonConnectButton, useTonWallet } from "@tonconnect/ui-react";

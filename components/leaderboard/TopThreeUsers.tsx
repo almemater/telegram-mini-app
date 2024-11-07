@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { FaMedal } from "react-icons/fa";
 import MindmintCoin from "@/components/MindmintCoin";

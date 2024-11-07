@@ -1,3 +1,4 @@
+"use client";
 import { useUser } from "@/context/UserContext";
 import { useState } from "react";
 import RewardEligibilityPopup from "./popups/RewardEligibilityPopup";
