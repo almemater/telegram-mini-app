@@ -12,7 +12,13 @@ const WeeklyLeaderboardRewards = () => {
 
   const fetchLeaderboardData = async () => {
     try {
-      const response = await fetch("/api/points/weeklyMetrics");
+      const response = await fetch("/api/points/weeklyMetrics", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({}),
+      });
       if (!response.ok) {
         throw new Error("Failed to fetch leaderboard data");
       }
