@@ -6,7 +6,7 @@ const pointsdataSchema = new Schema(
     full_name: { type: String, required: true },
     username: { type: String, required: true, unique: true },
     points: { type: Number, default: 0 },
-    dailyPoints: { type: Number, default: 0 }, 
+    daily_points: { type: Number, default: 0 }, 
   },
   { timestamps: true }
 );
