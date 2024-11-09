@@ -18,6 +18,7 @@ export interface PointsData {
   full_name: string;
   username: string;
   points: number;
+  daily_points: number;
 }
 
 export interface MemoryGameRecord {

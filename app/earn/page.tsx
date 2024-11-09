@@ -63,11 +63,11 @@ const EarnPage = () => {
                 className="mb-4 w-full rounded"
               />
 
-              <button className="btn-primary w-full py-2 mt-2">Mint SBT</button>
+              <button className="btn-primary w-full py-2 mt-2" disabled>SBT Coming Soon!</button>
             </div>
 
-            <ReferralRewards />
-            <WeeklyLeaderboardRewards />
+            {/* <ReferralRewards />
+            <WeeklyLeaderboardRewards /> */}
           </>
         )}
       </div>
