@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
     // Update user points
     const pointsdata = await PointsData.findOneAndUpdate(
       { id: userId },
-      { $inc: { points: score } },
+      { $inc: { points: score, daily_points: score } },
       { new: true }
     );
 
