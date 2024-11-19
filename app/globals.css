@@ -103,7 +103,7 @@ h6 {
   }
 
   .step {
-    @apply w-24 bg-gray-200 rounded-t-lg flex flex-col items-center pb-2 justify-end mt-2;
+    @apply w-24 bg-gradient-to-t from-[#855455] to-[#f9a287] flex flex-col justify-center items-center pb-2 text-3xl font-sans font-extrabold mt-2;
   }
 }
 

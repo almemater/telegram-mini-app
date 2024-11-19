@@ -37,3 +37,6 @@ next-env.d.ts
 
 # Env
 .env
+
+Dockerfile
+mindmint.tar

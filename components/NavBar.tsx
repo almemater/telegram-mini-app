@@ -13,11 +13,11 @@ const NavBar = () => {
 
   return (
     <nav className="navbar fixed bottom-0 w-full">
-      <div className="bg-dark border-t-2 text-white p-4 flex justify-around">
+      <div className="bg-[#272b2e] text-white p-4 flex justify-around">
         <Link href="/">
           <button
             onClick={() => setCurrentPage('/')}
-            className={`flex flex-col items-center ${currentPage === '/' ? 'text-white' : 'text-[#5A5E61]'}`}
+            className={`flex flex-col pt-1 items-center ${currentPage === '/' ? 'text-white' : 'text-[#5A5E61]'}`}
           >
             <ReactSVG
               src="/imgs/nav-icons/Home.svg"
@@ -29,7 +29,7 @@ const NavBar = () => {
         <Link href="/earn">
           <button
             onClick={() => setCurrentPage('/earn')}
-            className={`flex flex-col items-center ${currentPage === '/earn' ? 'text-white' : 'text-[#5A5E61]'}`}
+            className={`flex flex-col pt-1 items-center ${currentPage === '/earn' ? 'text-white' : 'text-[#5A5E61]'}`}
           >
             <ReactSVG
               src="/imgs/nav-icons/Task.svg"
@@ -41,7 +41,7 @@ const NavBar = () => {
         <Link href="/rank">
           <button
             onClick={() => setCurrentPage('/rank')}
-            className={`flex flex-col items-center ${currentPage === '/rank' ? 'text-white' : 'text-[#5A5E61]'}`}
+            className={`flex flex-col pt-1 items-center ${currentPage === '/rank' ? 'text-white' : 'text-[#5A5E61]'}`}
           >
             <ReactSVG
               src="/imgs/nav-icons/Leaderboard.svg"
@@ -53,7 +53,7 @@ const NavBar = () => {
         <Link href="/profile">
           <button
             onClick={() => setCurrentPage('/profile')}
-            className={`flex flex-col items-center ${currentPage === '/profile' ? 'text-white' : 'text-[#5A5E61]'}`}
+            className={`flex flex-col pt-1 items-center ${currentPage === '/profile' ? 'text-white' : 'text-[#5A5E61]'}`}
           >
             <ReactSVG
               src="/imgs/nav-icons/Profile.svg"

@@ -14,64 +14,64 @@ const TopThreeUsers: React.FC<TopThreeUsersProps> = ({ users }) => {
   return (
     <div className="flex justify-center text-sm items-end mt-8">
       {/* Silver User */}
-      <div className="flex flex-col items-center mx-2">
+      <div className="flex flex-col items-center">
         <div className="profile-circle glow-silver">
           {users[1].full_name.slice(0, 2).toUpperCase()}
         </div>
-        <div className="mt-2 text-center">
+        <div className="mt-2 text-center flex flex-col justify-center items-center">
           <span className="block font-semibold">
             {formatName(users[1].full_name)}
           </span>
-          <span className="text-sm flex items-center justify-center gap-1">
-            {users[1].points} <MindmintCoin />
+          <span className="text-sm bg-zinc-500 py-1 px-2 rounded flex w-fit items-center justify-evenly gap-1">
+          <MindmintCoin /> <span>{users[1].points} </span> 
           </span>
         </div>
-        <div className={`step ${heights[0]} text-gray-500`}>
+        <div className={`step ${heights[0]}`}>
           <div className="flex items-center justify-center">
-            <FaMedal className="mr-2" />
-            Silver
+            {/* <FaMedal className="mr-2" /> */}
+            2
           </div>
         </div>
       </div>
 
       {/* Gold User */}
-      <div className="flex flex-col items-center mx-2">
+      <div className="flex flex-col items-center">
         <div className="profile-circle glow-gold">
           {users[0].full_name.slice(0, 2).toUpperCase()}
         </div>
-        <div className="mt-2 text-center">
+        <div className="mt-2 text-center flex flex-col justify-center items-center">
           <span className="block font-semibold">
             {formatName(users[0].full_name)}
           </span>
-          <span className="text-sm flex items-center justify-center gap-1">
-            {users[0].points} <MindmintCoin />
+          <span className="text-sm bg-zinc-500 py-1 px-2 rounded flex w-fit items-center justify-evenly gap-1">
+          <MindmintCoin /> <span>{users[0].points} </span> 
           </span>
         </div>
-        <div className={`step ${heights[1]} text-yellow-500`}>
+        <div className={`step ${heights[1]}`}>
           <div className="flex items-center justify-center">
-            <FaMedal className="mr-2" />
-            Gold
+            {/* <FaMedal className="mr-2" /> */}
+            1
           </div>
         </div>
       </div>
 
       {/* Bronze User */}
-      <div className="flex flex-col items-center mx-2">
+      <div className="flex flex-col items-center">
         <div className="profile-circle glow-bronze">
           {users[2].full_name.slice(0, 2).toUpperCase()}
         </div>
-        <div className="mt-2 text-center">
+        <div className="mt-2 text-center flex flex-col justify-center items-center">
           <span className="block font-semibold">
             {formatName(users[2].full_name)}
           </span>
-          <span className="text-sm flex items-center justify-center gap-1">
-            {users[2].points} <MindmintCoin />
+          <span className="text-sm bg-zinc-500 py-1 px-2 rounded flex w-fit items-center justify-evenly gap-1">
+          <MindmintCoin /> <span>{users[2].points} </span> 
           </span>
         </div>
-        <div className={`step ${heights[2]} text-orange-500`}>
+        <div className={`step ${heights[2]}`}>
           <div className="flex items-center justify-center">
-            <FaMedal className="mr-2" />
-            Bronze
+            {/* <FaMedal className="mr-2" /> */}
+            3
           </div>
         </div>
       </div>
