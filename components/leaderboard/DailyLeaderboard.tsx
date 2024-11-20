@@ -53,7 +53,7 @@ const DailyLeaderboard: React.FC<DailyLeaderboardProps> = () => {
 
   return (
     <>
-      {topThreeUsers.length > 2 && <TopThreeUsers users={topThreeUsers} />}
+      {topThreeUsers.length > 2 && <TopThreeUsers users={topThreeUsers} section="daily" />}
       {users && (
         <div className="leaderboard mb-4 absolute w-screen left-0">
           <table className="min-w-full bg-white text-black rounded-t-lg">
@@ -69,7 +69,7 @@ const DailyLeaderboard: React.FC<DailyLeaderboardProps> = () => {
                 <React.Fragment key={index}>
                   <tr
                     className={`text-center bg-black border-b text-white  ${
-                      user.username === userData.username
+                      user.id === userData.id
                         ? "font-extrabold text-primary"
                         : ""
                     }`}

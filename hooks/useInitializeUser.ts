@@ -53,7 +53,7 @@ export const useInitializeUser = () => {
               id: user.id,
               first_name: user.first_name,
               last_name: user.last_name,
-              username: user.username,
+              username: user?.username,
               language_code: user.language_code,
               is_premium: user.is_premium,
               points: 0,

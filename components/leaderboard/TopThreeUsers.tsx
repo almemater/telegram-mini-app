@@ -6,10 +6,15 @@ import { formatName } from "@/libs/generators";
 
 interface TopThreeUsersProps {
   users: any[];
+  section: "overall" | "daily";
 }
 
-const TopThreeUsers: React.FC<TopThreeUsersProps> = ({ users }) => {
+const TopThreeUsers: React.FC<TopThreeUsersProps> = ({ users, section }) => {
   const heights = ["h-20", "h-24", "h-16"]; // Heights for silver, gold, and bronze steps
+
+  const getPoints = (user: any) => {
+    return section === "overall" ? user.points : user.daily_points;
+  };
 
   return (
     <div className="flex justify-center text-sm items-end mt-8">
@@ -23,12 +28,11 @@ const TopThreeUsers: React.FC<TopThreeUsersProps> = ({ users }) => {
             {formatName(users[1].full_name)}
           </span>
           <span className="text-sm bg-zinc-500 py-1 px-2 rounded flex w-fit items-center justify-evenly gap-1">
-          <MindmintCoin /> <span>{users[1].points} </span> 
+            <MindmintCoin /> <span>{getPoints(users[1])} </span>
           </span>
         </div>
         <div className={`step ${heights[0]}`}>
           <div className="flex items-center justify-center">
-            {/* <FaMedal className="mr-2" /> */}
             2
           </div>
         </div>
@@ -44,12 +48,11 @@ const TopThreeUsers: React.FC<TopThreeUsersProps> = ({ users }) => {
             {formatName(users[0].full_name)}
           </span>
           <span className="text-sm bg-zinc-500 py-1 px-2 rounded flex w-fit items-center justify-evenly gap-1">
-          <MindmintCoin /> <span>{users[0].points} </span> 
+            <MindmintCoin /> <span>{getPoints(users[0])} </span>
           </span>
         </div>
         <div className={`step ${heights[1]}`}>
           <div className="flex items-center justify-center">
-            {/* <FaMedal className="mr-2" /> */}
             1
           </div>
         </div>
@@ -65,12 +68,11 @@ const TopThreeUsers: React.FC<TopThreeUsersProps> = ({ users }) => {
             {formatName(users[2].full_name)}
           </span>
           <span className="text-sm bg-zinc-500 py-1 px-2 rounded flex w-fit items-center justify-evenly gap-1">
-          <MindmintCoin /> <span>{users[2].points} </span> 
+            <MindmintCoin /> <span>{getPoints(users[2])} </span>
           </span>
         </div>
         <div className={`step ${heights[2]}`}>
           <div className="flex items-center justify-center">
-            {/* <FaMedal className="mr-2" /> */}
             3
           </div>
         </div>

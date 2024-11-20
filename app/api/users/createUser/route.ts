@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       id,
       first_name,
       last_name,
-      username: last_name || "",
+      username: username || "",
       language_code,
       is_premium,
       completedTasks,
@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
     const newPointsData = await PointsData.create({
       id,
       full_name,
-      username,
+      username: username || "",
       points,
     });
 
