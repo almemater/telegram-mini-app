@@ -68,7 +68,7 @@ const OverallLeaderboard: React.FC<OverallLeaderboardProps> = () => {
               {users.map((user, index) => (
                 <React.Fragment key={index}>
                   <tr
-                    className={`text-center bg-black text-white  ${
+                    className={`text-center bg-black border-b text-white  ${
                       user.username === userData.username
                         ? "font-extrabold text-primary"
                         : ""
@@ -80,7 +80,6 @@ const OverallLeaderboard: React.FC<OverallLeaderboardProps> = () => {
                       {user.points} <MindmintCoin />
                     </td>
                   </tr>
-                  <div className="border-b " />
                 </React.Fragment>
               ))}
             </tbody>
