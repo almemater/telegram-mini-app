@@ -2,7 +2,7 @@
 import RankPageHeader2 from "@/components/headers/RankPageHeader2";
 import OverallLeaderboard from "@/components/leaderboard/OverallLeaderboard";
 
-const RankPage = () => {
+const OverallLeaderboardPage = () => {
   return (
     <>
       <RankPageHeader2 />
@@ -11,4 +11,4 @@ const RankPage = () => {
   );
 };
 
-export default RankPage;
+export default OverallLeaderboardPage;

@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     // Fetch top 25 users in descending order of points
     const pointsdata = await PointsData.find(
       {},
-      { id: 1, full_name: 1, username: 1, daily_points: 1 }
+      { id: 1, full_name: 1, username: 1, points: 1, daily_points: 1 }
     ).sort({ daily_points: -1, _id: 1 }).limit(50);
 
     if (!pointsdata) {
