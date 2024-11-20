@@ -8,10 +8,10 @@ import { BestGameRecordTypes } from "@/libs/constants";
 
 const RankPage = () => {
   const { userData, pointsData } = useUser();
-  const [bestGameScore, setBestGameScore] = useState<number>(0);
-  const [bestGameScoreLoading, setBestGameScoreLoading] =
-    useState<boolean>(true);
-  const [userRank, setUserRank] = useState<number | null>(null);
+  // const [bestGameScore, setBestGameScore] = useState<number>(0);
+  // const [bestGameScoreLoading, setBestGameScoreLoading] =
+  //   useState<boolean>(true);
+  // const [userRank, setUserRank] = u seState<number | null>(null);
   const [activeSection, setActiveSection] = useState<"overall" | "daily">(
     "overall"
   );
@@ -20,41 +20,41 @@ const RankPage = () => {
     setActiveSection(section);
   };
 
-  useEffect(() => {
-    const fetchBestGameScore = async () => {
-      if (!userData) {
-        console.error("User data is not available");
-        return;
-      }
-      setBestGameScoreLoading(true);
-      try {
-        const response = await fetch("/api/memoryGames/getGameRecord", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId: userData.id,
-            type: BestGameRecordTypes.HIGHSCORE,
-          }),
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setBestGameScore(data.gameRecord.score);
-        } else {
-          console.error("Error fetching best game score");
-        }
-      } catch (error) {
-        console.error("Error fetching best game score:", error);
-      } finally {
-        setBestGameScoreLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchBestGameScore = async () => {
+  //     if (!userData) {
+  //       console.error("User data is not available");
+  //       return;
+  //     }
+  //     setBestGameScoreLoading(true);
+  //     try {
+  //       const response = await fetch("/api/memoryGames/getGameRecord", {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           userId: userData.id,
+  //           type: BestGameRecordTypes.HIGHSCORE,
+  //         }),
+  //       });
+  //       if (response.ok) {
+  //         const data = await response.json();
+  //         setBestGameScore(data.gameRecord.score);
+  //       } else {
+  //         console.error("Error fetching best game score");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching best game score:", error);
+  //     } finally {
+  //       setBestGameScoreLoading(false);
+  //     }
+  //   };
 
-    fetchBestGameScore();
-  }, [userData]);
+  //   fetchBestGameScore();
+  // }, [userData]);
 
-  if (!userData || !pointsData || bestGameScoreLoading) {
+  if (!userData || !pointsData) {
     return <div>Loading...</div>;
   }
 
