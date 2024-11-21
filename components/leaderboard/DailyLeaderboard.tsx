@@ -55,8 +55,8 @@ const DailyLeaderboard: React.FC<DailyLeaderboardProps> = () => {
     <>
       {topThreeUsers.length > 2 && <TopThreeUsers users={topThreeUsers} section="daily" />}
       {users && (
-        <div className="leaderboard mb-4 absolute w-screen left-0">
-          <table className="min-w-full bg-white text-black rounded-t-lg">
+        <div className="leaderboard   ">
+          <table className="min-w-full bg-white text-black rounded-t-lg outline-1 outline-white outline">
             <thead className=" ">
               <tr>
                 <th className="py-2">Rank</th>

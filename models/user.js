@@ -5,7 +5,7 @@ const userSchema = new Schema(
     id: { type: String, required: true, unique: true },
     first_name: { type: String, required: true },
     last_name: { type: String },
-    username: { type: String, required: true, unique: true },
+    username: { type: String, unique: true, sparse: true }, // Allow null and ensure uniqueness
     language_code: { type: String },
     is_premium: { type: Boolean, default: false },
     completedTasks: [{ type: Number }],

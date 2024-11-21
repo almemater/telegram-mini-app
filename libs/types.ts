@@ -2,7 +2,7 @@ export interface TGUserData {
   id: number;
   first_name: string;
   last_name?: string;
-  username: string;
+  username?: string;
   language_code: string;
   is_premium?: boolean;
 }
@@ -16,7 +16,7 @@ export interface UserData extends TGUserData {
 export interface PointsData {
   id: number;
   full_name: string;
-  username: string;
+  username?: string;
   points: number;
   daily_points: number;
 }
@@ -42,7 +42,7 @@ export const sampleUserData: UserData = {
   id: 123456,
   first_name: "John",
   last_name: "Doe",
-  username: "johndoe",
+  // username: "johndoe",
   language_code: "en",
   is_premium: false,
   completedTasks: [],

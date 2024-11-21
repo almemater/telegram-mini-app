@@ -34,7 +34,7 @@ const InnerClientWrapper = ({ children }: { children: ReactNode }) => {
       ) : (
         <>
           <AppBar />
-          <main className="flex-grow p-4 pb-16 font-primary">{children}</main>
+          <main className="flex-grow p-4 pb-24 font-primary">{children}</main>
           <NavBar />
         </>
       )}

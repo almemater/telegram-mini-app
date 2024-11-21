@@ -13,8 +13,8 @@ export async function PUT(request: NextRequest) {
   }
 
   try {
-    // Update all records to set dailyPoints to 0
-    await PointsData.updateMany({}, { $set: { dailyPoints: 0 } });
+    // Update all records to set daily_points to 0
+    await PointsData.updateMany({}, { $set: { daily_points: 0 } });
 
     return NextResponse.json({ message: "Daily points reset successfully" }, { status: 200 });
   } catch (error) {

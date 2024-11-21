@@ -2,10 +2,13 @@ import crypto from "crypto";
 
 export const generateReferralCode = (
   userId: string,
-  username: string
+  username: string | null
 ): string => {
   const hash = crypto.createHash("sha256");
-  hash.update(userId + username);
+  hash.update(userId);
+  if (username) {
+    hash.update(username);
+  }
   const base64Hash = hash.digest("base64");
   const referralCode = base64Hash
     .replace(/[^a-zA-Z0-9]/g, "")
@@ -14,9 +17,13 @@ export const generateReferralCode = (
   return referralCode;
 };
 
-export const generateGameId = (userId: string, username: string): string => {
+export const generateGameId = (userId: string, username: string | null): string => {
   const hash = crypto.createHash("sha256");
-  hash.update(userId + username + Date.now().toString());
+  hash.update(userId);
+  if (username) {
+    hash.update(username);
+  }
+  hash.update(Date.now().toString());
   const base64Hash = hash.digest("base64");
   const gameId = base64Hash
     .replace(/[^a-zA-Z0-9]/g, "")

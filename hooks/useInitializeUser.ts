@@ -35,25 +35,24 @@ export const useInitializeUser = () => {
       }
 
       try {
-        const response = await fetch(
-          `/api/users/getUser?userid=${user.id}`
-        );
+        const response = await fetch(`/api/users/getUser?userid=${user.id}`);
         if (response.ok) {
           const userData = await response.json();
           setUserData(userData.user);
           setPointsData(userData.pointsdata);
           // setShowPopup(true);
         } else {
+
           const createUserResponse = await fetch("/api/users/createUser", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              id: user.id,
+              id: user.id.toString(),
               first_name: user.first_name,
               last_name: user.last_name,
-              username: user?.username,
+              username: user.username,
               language_code: user.language_code,
               is_premium: user.is_premium,
               points: 0,
@@ -104,7 +103,7 @@ export const useInitializeUser = () => {
 
             if (referralCode) {
               await handleReferral(referralCode, newUser.user.id);
-            } 
+            }
           } else {
             console.error("Error creating user");
           }
@@ -160,6 +159,6 @@ export const useInitializeUser = () => {
     setShowPopup,
     showPointsUpdatePopup,
     setShowPointsUpdatePopup,
-    loading
+    loading,
   };
 };

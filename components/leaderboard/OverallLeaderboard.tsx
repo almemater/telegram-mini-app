@@ -55,8 +55,8 @@ const OverallLeaderboard: React.FC<OverallLeaderboardProps> = () => {
     <>
       {topThreeUsers.length > 2 && <TopThreeUsers users={topThreeUsers} section="overall" />}
       {users && (
-        <div className="leaderboard mb-4 absolute w-screen left-0">
-          <table className="min-w-full bg-white text-black rounded-t-lg">
+        <div className="leaderboard   ">
+          <table className="min-w-full bg-white text-black rounded-t-lg outline-1 outline-white outline">
             <thead className=" ">
               <tr>
                 <th className="py-2">Rank</th>
@@ -68,7 +68,7 @@ const OverallLeaderboard: React.FC<OverallLeaderboardProps> = () => {
               {users.map((user, index) => (
                 <React.Fragment key={index}>
                   <tr
-                    className={`text-center bg-black border-b text-white  ${
+                    className={`text-center bg-dark border-b text-white  ${
                       user.id === userData.id
                         ? "font-extrabold text-primary"
                         : ""

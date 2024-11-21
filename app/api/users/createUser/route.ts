@@ -28,13 +28,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const referralCode = generateReferralCode(id, username);
+    // Handle missing username
+    const validUsername = typeof username === "string" && username.trim() !== "" ? username : null;
+
+    const referralCode = generateReferralCode(id, validUsername);
 
     const newUser = await User.create({
       id,
       first_name,
       last_name,
-      username: username || "",
+      username: validUsername,
       language_code,
       is_premium,
       completedTasks,
@@ -46,8 +49,9 @@ export async function POST(request: NextRequest) {
     const newPointsData = await PointsData.create({
       id,
       full_name,
-      username: username || "",
+      username: validUsername,
       points,
+      daily_points: 0, // Ensure daily_points is initialized
     });
 
     console.log(`User created: ${newUser} ${newPointsData}`);
